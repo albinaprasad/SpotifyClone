@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <!-- Main Content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#121212">
+
+        <!-- Header with Menu Button -->
+        <LinearLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#1A1A1A"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Menu Button -->
+            <ImageButton
+                android:id="@+id/navButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Open Navigation Menu"
+                android:padding="8dp"
+                android:src="@drawable/nav"
+                app:tint="#FFFFFF" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="Spotify"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Placeholder for balance (same width as menu button) -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <!-- Button Row -->
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/shuffleBtn"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Shuffle"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/shuffle_icon"
+                app:iconGravity="start"
+                app:iconTint="@color/white"
+                app:backgroundTint="#2C2C2C"
+                app:rippleColor="#1DB954"
+                app:strokeWidth="0dp"
+                android:textSize="13sp"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/favBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Favorite"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/favourite"
+                app:iconGravity="start"
+                app:iconTint="@color/white"
+                app:backgroundTint="#2C2C2C"
+                app:rippleColor="#1DB954"
+                app:strokeWidth="0dp"
+                android:textSize="13sp"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/PlayListBtn"
+                android:textSize="13sp"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Playlist"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/playlist_add"
+                app:iconGravity="start"
+                app:iconTint="@color/white"
+                app:backgroundTint="#2C2C2C"
+                app:rippleColor="#1DB954"
+                app:strokeWidth="0dp"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+        </LinearLayout>
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            tools:listitem="@layout/song_details"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:background="#1A1A1A"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_body"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#FFFFFF" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
