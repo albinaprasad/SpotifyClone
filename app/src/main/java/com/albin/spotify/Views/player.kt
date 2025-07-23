@@ -3,11 +3,14 @@ package com.albin.spotify.Views
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
@@ -24,15 +27,21 @@ import com.albin.spotify.databinding.ActivityPlayerBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class player : AppCompatActivity() {
+class player : AppCompatActivity(), ServiceConnection {
 
-    val PlayermusicList = ArrayList<Music>()
+
+    companion object{
+        val PlayermusicList = ArrayList<Music>()
+        var position:Int=0
+    }
+
+
     lateinit var playerBinding: ActivityPlayerBinding
-     var mediaPlayer: MediaPlayer ?= null
+     var musicservice : musicService?=null
 
     var isPlaying: Boolean=false
 
-    var position:Int=0
+
     var startY:Float=0f
 
 
@@ -44,15 +53,19 @@ class player : AppCompatActivity() {
         playerBinding= ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(playerBinding.root)
 
+        // starting the music service
+        val serviceintent= Intent(this, musicService::class.java)
+        bindService(serviceintent,this,BIND_AUTO_CREATE)
+        startService(serviceintent)
 
         PlayermusicList.addAll(MainActivity.musicList)
         position=intent.getIntExtra("index",0)
 
+        Log.d("position",position.toString())
+
 //set the image for music
         setLayout()
-//setup mediaPlayer
 
-setMediaPlayer()
 
 //play and pause
         playerBinding.Pausebtn.setOnClickListener {
@@ -60,14 +73,14 @@ setMediaPlayer()
             if (isPlaying)
             {
                 playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
-                mediaPlayer!!.pause()
+                musicservice!!.mediaPlayer!!.pause()
                 isPlaying=false
-                playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
+
             }
             else
             {
                 playerBinding.Pausebtn.setIconResource(R.drawable.pause)
-                mediaPlayer!!.start()
+                musicservice!!. mediaPlayer!!.start()
                 isPlaying=true
 
             }
@@ -95,6 +108,7 @@ setMediaPlayer()
     if (position == 0 )
     {
         position=PlayermusicList.size-1
+
     }
     else
     {
@@ -117,46 +131,30 @@ setMediaPlayer()
         swipeToGoBack()
 
 
-
-
     }
 
-    private fun sendIntent(action: musicService.Actions, songPath: String?, songTitle: String?) {
 
-        val intent=Intent(this, musicService::class.java).apply {
-            this.action=action.toString()
-            songPath?.let { putExtra("SONG_PATH", it) }
-            songTitle?.let { putExtra("SONG_TITLE", it) }
-        }
-        startService(intent)
-    }
 
     private fun setMediaPlayer() {
 
 
-        mediaPlayer?.let {
+        musicservice!!. mediaPlayer?.let {
             it.stop()
             it.reset()
             it.release()
         }
-        mediaPlayer = null
+        musicservice!!. mediaPlayer = null
 
-        mediaPlayer= MediaPlayer()
-        mediaPlayer!!.reset()
-        mediaPlayer!!.setDataSource(PlayermusicList[position].path)
-        mediaPlayer!!.prepare()
-        mediaPlayer!!.start()
+        musicservice!!.mediaPlayer= MediaPlayer()
+        musicservice!!. mediaPlayer!!.reset()
+        musicservice!!.mediaPlayer!!.setDataSource(PlayermusicList[position].path)
+        musicservice!!.mediaPlayer!!.prepare()
+        musicservice!!.mediaPlayer!!.start()
 
         playerBinding.Pausebtn.setIconResource(R.drawable.pause)
         isPlaying=true
 
-        showNotification()
 
-
-//////////////////////////////////////////////////////////////////////////
-//        val songPath = PlayermusicList[position].path
-//        val songTitle = PlayermusicList[position].title.toString()
-//        sendIntent(musicService.Actions.START, songPath, songTitle)
     }
 
     private fun setLayout() {
@@ -208,28 +206,30 @@ setMediaPlayer()
 
     override fun onDestroy() {
         super.onDestroy()
-        // Ensure MediaPlayer is released
-        mediaPlayer?.let {
+
+        musicservice !!.mediaPlayer?.let {
             it.stop()
             it.reset()
             it.release()
         }
-        mediaPlayer = null
+        musicservice!!. mediaPlayer = null
 
     }
 
-    private fun showNotification() {
-        if (PlayermusicList.isEmpty()) {
-            Log.e("Player", "Music list is empty")
-            Toast.makeText(this, "No songs available", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val songPath = PlayermusicList[position].path
-        val songTitle = PlayermusicList[position].title.toString()
-        sendIntent(musicService.Actions.START, songPath, songTitle)
-        playerBinding.Pausebtn.setIconResource(R.drawable.pause)
-        isPlaying = true
+    override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+
+        val binder= p1 as musicService.Mybinder
+        musicservice=binder.currentService()
+        setMediaPlayer()
+        musicservice!!.showNotification()
+
     }
+
+    override fun onServiceDisconnected(p0: ComponentName?) {
+
+        musicservice=null
+    }
+
 
 }
 

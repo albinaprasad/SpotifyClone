@@ -2,6 +2,7 @@ package com.albin.spotify.Views
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class MusicAdapter(val context: Context,var musicList: ArrayList<Music>) : Recyc
 
             val intent= Intent(context, player::class.java)
             intent.putExtra("index",position)
+            Log.d("position",position.toString())
             context.startActivity(intent)
 
         }
