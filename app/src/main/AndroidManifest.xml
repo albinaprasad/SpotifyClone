@@ -41,6 +41,9 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback"
             />
+        <receiver android:name=".NotificationReciever"
+            android:enabled="true">
+        </receiver>
 
     </application>
 

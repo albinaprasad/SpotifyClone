@@ -1,8 +1,10 @@
 package com.albin.spotify.Views
 
 import android.annotation.SuppressLint
+import android.app.ComponentCaller
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -22,6 +24,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.albin.spotify.MainActivity
 import com.albin.spotify.Music
+import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
 import com.albin.spotify.databinding.ActivityPlayerBinding
 import com.bumptech.glide.Glide
@@ -33,19 +36,16 @@ class player : AppCompatActivity(), ServiceConnection {
     companion object{
         val PlayermusicList = ArrayList<Music>()
         var position:Int=0
+        var musicservice : musicService?=null
+        var isPlaying: Boolean=false
+        lateinit var playerBinding: ActivityPlayerBinding
+
     }
 
 
-    lateinit var playerBinding: ActivityPlayerBinding
-     var musicservice : musicService?=null
-
-    var isPlaying: Boolean=false
 
 
     var startY:Float=0f
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,16 +72,22 @@ class player : AppCompatActivity(), ServiceConnection {
 
             if (isPlaying)
             {
+
                 playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
                 musicservice!!.mediaPlayer!!.pause()
+                player.musicservice!!.showNotification()
                 isPlaying=false
+
 
             }
             else
             {
+
                 playerBinding.Pausebtn.setIconResource(R.drawable.pause)
                 musicservice!!. mediaPlayer!!.start()
+                player.musicservice!!.showNotification()
                 isPlaying=true
+
 
             }
 
@@ -152,6 +158,7 @@ class player : AppCompatActivity(), ServiceConnection {
         musicservice!!.mediaPlayer!!.start()
 
         playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+        player.musicservice!!.showNotification()
         isPlaying=true
 
 
@@ -204,17 +211,17 @@ class player : AppCompatActivity(), ServiceConnection {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        musicservice !!.mediaPlayer?.let {
-            it.stop()
-            it.reset()
-            it.release()
-        }
-        musicservice!!. mediaPlayer = null
-
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//
+//        musicservice !!.mediaPlayer?.let {
+//            it.stop()
+//            it.reset()
+//            it.release()
+//        }
+//        musicservice!!. mediaPlayer = null
+//
+//    }
 
     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
 
@@ -228,6 +235,31 @@ class player : AppCompatActivity(), ServiceConnection {
     override fun onServiceDisconnected(p0: ComponentName?) {
 
         musicservice=null
+    }
+
+
+    override fun onNewIntent(uiintent: Intent) {
+        super.onNewIntent(uiintent)
+
+        when(uiintent.action){
+
+            "Update_the_UI"->{
+                var index: Int= uiintent.getIntExtra("position",0)
+        Glide.with(this).load(PlayermusicList[index].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
+            .centerCrop().into(playerBinding.shapeableImageView)
+        playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+        playerBinding.appCompatTextView.text=PlayermusicList[index].title.toString()
+
+            }
+
+            "previous_ui_update"->{
+                var index: Int= uiintent.getIntExtra("previous",0)
+                Glide.with(this).load(PlayermusicList[index].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
+                    .centerCrop().into(playerBinding.shapeableImageView)
+                playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+                playerBinding.appCompatTextView.text=PlayermusicList[index].title.toString()
+            }
+        }
     }
 
 

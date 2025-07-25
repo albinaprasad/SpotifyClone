@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun adapterSetup() {
-        // Clear and populate the companion object musicList
+
         musicList.clear()
         musicList.addAll(readAllMusic())
 

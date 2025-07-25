@@ -22,14 +22,25 @@ import android.util.Log
 
 import androidx.core.app.NotificationCompat
 import androidx.palette.graphics.Palette
+import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
 import com.albin.spotify.Views.player
+
 
 class musicService: Service() {
 
 
+companion object{
+    val PREVIOUS="previous"
+    val NEXT="next"
+    val STOP="stop"
+    val PLAY="play"
 
+
+}
     var mediaPlayer: MediaPlayer? = null
+
+
     lateinit  var mediasession: MediaSessionCompat
 
     val mybinder=Mybinder()
@@ -57,7 +68,34 @@ class musicService: Service() {
 
             }
 
-            val noti = NotificationCompat.Builder(baseContext, "id1")
+
+            val Previntent= Intent(this, NotificationReciever::class.java).setAction(PREVIOUS)
+            val prevPendingIntent= PendingIntent.getBroadcast(this,0,Previntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+            val Nextintent= Intent(this, NotificationReciever::class.java).setAction(NEXT)
+            val nextPendingIntent= PendingIntent.getBroadcast(this,0,Nextintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+            val Exitintent= Intent(this, NotificationReciever::class.java).setAction(STOP)
+            val exitPendingIntent= PendingIntent.getBroadcast(this,0,Exitintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+            val Playintent= Intent(this, NotificationReciever::class.java).setAction(PLAY)
+            val playPendingIntent= PendingIntent.getBroadcast(this,0,Playintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+            val playPauseIcon = if (player.isPlaying) {
+                R.drawable.playandpause
+            } else {
+                R.drawable.pause
+            }
+
+            val playPauseText=if(player.isPlaying){
+                "Pause"
+
+            }
+            else{
+                "play"
+            }
+
+                val noti = NotificationCompat.Builder(baseContext, "id1")
                 .setContentTitle(player.PlayermusicList[player.position].title)
                 .setContentText(player.PlayermusicList[player.position].singer)
                 .setSmallIcon(R.drawable.updates)
@@ -65,10 +103,10 @@ class musicService: Service() {
                 .setSubText("Now Playing")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOnlyAlertOnce(true)
-                .addAction(R.drawable.previous, "previous", null)
-                .addAction(R.drawable.playandpause, "play", null)
-                .addAction(R.drawable.skip_previous, "next", null)
-                .addAction(R.drawable.exit, "exit", null)
+                .addAction(R.drawable.previous, "previous", prevPendingIntent)
+                .addAction(playPauseIcon, playPauseText, playPendingIntent)
+                .addAction(R.drawable.skip_previous, "next", nextPendingIntent)
+                .addAction(R.drawable.exit, "exit", exitPendingIntent)
                 .setStyle(
                     androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediasession.sessionToken)
