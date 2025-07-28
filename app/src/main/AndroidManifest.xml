@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"></uses-permission>
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"></uses-permission>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
     <application
         android:name=".Views.applicationClass"
         android:allowBackup="true"
@@ -20,12 +24,15 @@
         android:theme="@style/Theme.SPOTIFY"
         tools:targetApi="31">
         <activity
+            android:name=".Views.MoreOPtions"
+            android:exported="false" />
+        <activity
             android:name=".Views.Favourites"
             android:exported="false" />
         <activity
             android:name=".Views.player"
-            android:theme="@style/AppTheme.Translucent"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.Translucent" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -39,12 +46,11 @@
         <service
             android:name=".Views.musicService"
             android:exported="false"
-            android:foregroundServiceType="mediaPlayback"
-            />
-        <receiver android:name=".NotificationReciever"
-            android:enabled="true">
-        </receiver>
+            android:foregroundServiceType="mediaPlayback" />
 
+        <receiver
+            android:name=".NotificationReciever"
+            android:enabled="true"></receiver>
     </application>
 
 </manifest>

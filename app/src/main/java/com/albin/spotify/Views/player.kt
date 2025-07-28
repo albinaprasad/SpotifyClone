@@ -9,17 +9,22 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
 import android.media.MediaPlayer
+import android.media.MediaTimestamp
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.albin.spotify.MainActivity
@@ -30,7 +35,10 @@ import com.albin.spotify.databinding.ActivityPlayerBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class player : AppCompatActivity(), ServiceConnection {
+
+
+@SuppressLint("NewApi")
+class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
 
 
     companion object{
@@ -38,11 +46,11 @@ class player : AppCompatActivity(), ServiceConnection {
         var position:Int=0
         var musicservice : musicService?=null
         var isPlaying: Boolean=false
+        var isRepeat:Boolean=false
+
         lateinit var playerBinding: ActivityPlayerBinding
 
     }
-
-
 
 
     var startY:Float=0f
@@ -96,33 +104,45 @@ class player : AppCompatActivity(), ServiceConnection {
         //nextButton
         playerBinding.Fwrdbtn.setOnClickListener {
 
-            if (position == PlayermusicList.size-1 )
+            if(isRepeat== false)
             {
-                position=0
+
+                if (position == PlayermusicList.size-1 )
+                {
+                    position=0
+                }
+                else
+                {
+                    position++
+                }
+
+                setMediaPlayer()
+                setLayout()
+            }
+
+
+
+        }
+
+        //previous button
+    playerBinding.backbtn.setOnClickListener {
+
+
+        if(isRepeat== false)
+        {
+            if (position == 0 )
+            {
+                position=PlayermusicList.size-1
+
             }
             else
             {
-                position++
+                position--
             }
 
             setMediaPlayer()
             setLayout()
         }
-
-        //previous button
-    playerBinding.backbtn.setOnClickListener {
-    if (position == 0 )
-    {
-        position=PlayermusicList.size-1
-
-    }
-    else
-    {
-        position--
-    }
-
-    setMediaPlayer()
-    setLayout()
 }
 
 
@@ -137,6 +157,51 @@ class player : AppCompatActivity(), ServiceConnection {
         swipeToGoBack()
 
 
+        //seekbar setup
+        playerBinding.musicSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(
+                p0: SeekBar?,
+                progress: Int,
+                fromUser: Boolean
+            ) {
+                if(fromUser)
+                {
+                    musicservice!!.mediaPlayer!!.seekTo(progress)
+                    playerBinding.currentTimeTextView.text= formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+        })
+
+//repeat button feature
+
+        playerBinding.repeatBtn.setOnClickListener {
+
+            if (isRepeat==false)
+            {
+                isRepeat=true
+                playerBinding.repeatBtn.setBackgroundColor(Color.RED)
+            }
+            else
+            {
+                isRepeat=false
+                playerBinding.repeatBtn.setBackgroundColor(Color.BLACK)
+            }
+        }
+
+        // 3 dots
+
+        playerBinding.favBtn.setOnClickListener {
+            val moreOPtionsIntent=Intent(this, MoreOPtions::class.java)
+            startActivity(moreOPtionsIntent)
+        }
     }
 
 
@@ -161,10 +226,26 @@ class player : AppCompatActivity(), ServiceConnection {
         player.musicservice!!.showNotification()
         isPlaying=true
 
+        playerBinding.currentTimeTextView.text= formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+
+        playerBinding.totalTimeTextView.text= formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
+
+        playerBinding.musicSeekBar.progress=0
+        playerBinding.musicSeekBar.max=musicservice!!.mediaPlayer!!.duration
+
+        musicservice!!.mediaPlayer!!.setOnCompletionListener(this)
+
 
     }
 
-    private fun setLayout() {
+     fun formatTimeDuration(lng: Long): String {
+        val totalSeconds = lng / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
+
+     fun setLayout() {
 
         Glide.with(this).load(PlayermusicList[position].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
             .centerCrop().into(playerBinding.shapeableImageView)
@@ -229,6 +310,7 @@ class player : AppCompatActivity(), ServiceConnection {
         musicservice=binder.currentService()
         setMediaPlayer()
         musicservice!!.showNotification()
+        musicservice!!.seekbarSetup()
 
     }
 
@@ -261,6 +343,31 @@ class player : AppCompatActivity(), ServiceConnection {
             }
         }
     }
+
+    override fun onCompletion(p0: MediaPlayer?) {
+
+        if(isRepeat==false)
+        {
+            if (position == PlayermusicList.size-1 )
+            {
+                position=0
+            }
+            else
+            {
+                position++
+            }
+
+            setMediaPlayer()
+            setLayout()
+        }
+        else
+        {
+            setMediaPlayer()
+            setLayout()
+        }
+    }
+
+
 
 
 }

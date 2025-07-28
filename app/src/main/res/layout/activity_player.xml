@@ -53,7 +53,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/favourite"
+            android:src="@drawable/three_dots"
             app:tint="#FFFFFF" />
     </LinearLayout>
 
@@ -115,8 +115,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:progressBackgroundTint="#424242"
-            android:progressTint="#1DB954"
-            android:thumbTint="#1DB954"
+            android:progressTint="#FFFFFF"
+            android:thumbTint="#FFFFFF"
+            android:elevation="8dp"
+            android:translationZ="4dp"
            />
 
         <RelativeLayout

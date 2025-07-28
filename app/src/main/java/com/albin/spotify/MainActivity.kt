@@ -1,6 +1,7 @@
 package com.albin.spotify
 
 import android.annotation.SuppressLint
+import android.app.Service.STOP_FOREGROUND_REMOVE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -24,6 +25,7 @@ import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.ActivityMainBinding
 import java.io.File
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,10 +47,7 @@ class MainActivity : AppCompatActivity() {
         // Request permission for the storage access
         requestPermission()
 
-        mainBinding.shuffleBtn.setOnClickListener {
-            val intent = Intent(applicationContext, player::class.java)
-            startActivity(intent)
-        }
+
 
         // Navigation bar set up
         mainBinding.navButton.setOnClickListener {
@@ -92,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         if (checkPermission()) {
             adapterSetup()
         }
+
+
     }
 
     private fun adapterSetup() {
@@ -199,5 +200,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         return tempMusicList
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(player.isPlaying == false && player.musicservice != null)
+        {
+        player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
+            player.musicservice!!.mediaPlayer!!.release()
+            player.musicservice=null
+            exitProcess(1)
+        }
     }
 }

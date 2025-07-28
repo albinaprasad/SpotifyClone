@@ -15,7 +15,9 @@ import android.media.session.MediaSession
 import android.net.Uri
 import android.os.Binder
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 
 import android.util.Log
@@ -25,6 +27,9 @@ import androidx.palette.graphics.Palette
 import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
 import com.albin.spotify.Views.player
+import com.albin.spotify.Views.player.Companion.musicservice
+import com.albin.spotify.Views.player.Companion.playerBinding
+import kotlinx.coroutines.Runnable
 
 
 class musicService: Service() {
@@ -40,7 +45,9 @@ companion object{
 }
     var mediaPlayer: MediaPlayer? = null
 
+    var player1=player()
 
+    lateinit var runnable: Runnable
     lateinit  var mediasession: MediaSessionCompat
 
     val mybinder=Mybinder()
@@ -81,6 +88,19 @@ companion object{
             val Playintent= Intent(this, NotificationReciever::class.java).setAction(PLAY)
             val playPendingIntent= PendingIntent.getBroadcast(this,0,Playintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
+
+            val contentIntent = Intent(this, player::class.java).apply {
+                putExtra("index", player.position)
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+
+            val contentPendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                contentIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
             val playPauseIcon = if (player.isPlaying) {
                 R.drawable.playandpause
             } else {
@@ -107,6 +127,7 @@ companion object{
                 .addAction(playPauseIcon, playPauseText, playPendingIntent)
                 .addAction(R.drawable.skip_previous, "next", nextPendingIntent)
                 .addAction(R.drawable.exit, "exit", exitPendingIntent)
+                .setContentIntent(contentPendingIntent)
                 .setStyle(
                     androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediasession.sessionToken)
@@ -119,6 +140,19 @@ companion object{
             Log.e("NotificationError", "Error building notification", e)
         }
     }
+
+    fun seekbarSetup(){
+
+        runnable= Runnable {
+            playerBinding.currentTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+            playerBinding.musicSeekBar.progress=musicservice!!.mediaPlayer!!.currentPosition
+            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable,0)
+
+
+    }
+
 
 
 }

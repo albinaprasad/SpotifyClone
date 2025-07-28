@@ -27,12 +27,15 @@ class NotificationReciever: BroadcastReceiver() {
             musicService.NEXT -> playNext(context)
             musicService.PREVIOUS -> PlayPrevious(context)
             musicService.STOP -> stopAPP()
+
         }
     }
 
+
+
     fun setupMusicService()
     {
-
+        var player1=player()
         player.musicservice!!. mediaPlayer?.let {
             it.stop()
             it.reset()
@@ -48,7 +51,12 @@ class NotificationReciever: BroadcastReceiver() {
 
         player.musicservice!!.showNotification()
         isPlaying=true
+        playerBinding.currentTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
 
+        playerBinding.totalTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
+
+        playerBinding.musicSeekBar.progress=0
+        playerBinding.musicSeekBar.max=musicservice!!.mediaPlayer!!.duration
     }
 
 

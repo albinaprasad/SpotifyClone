@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/SpBlack"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.MoreOPtions">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/headerLL"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/SpBlack"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/img_1"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/corner_radius">
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+        <LinearLayout
+            android:id="@+id/albumArtMO"
+            android:paddingStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/SpBlack"
+          >
+            <TextView
+                android:id="@+id/albumNameMO"
+                android:textColor="@color/white"
+                android:padding="12dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ALBUM NAME">
+
+        </TextView>
+            <TextView
+                android:id="@+id/artitNameMO"
+                android:textColor="@color/white"
+                android:padding="12dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Artist NAME">
+
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerLL"
+        app:layout_constraintVertical_bias="0.033">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/favMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Add To Liked Songs"
+                app:icon="@drawable/favourite"
+                app:iconSize="32dp"
+               />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/AddPlaylistMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Add to playlist"
+                app:icon="@drawable/add_profile"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/EqualiserMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Equaliser"
+                app:icon="@drawable/equaliser"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/closeMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Hide in this  album"
+                app:icon="@drawable/close"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/diamondMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Listen to music ad-free"
+                app:icon="@drawable/diamond"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/gotoAlbumMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Go to album"
+                app:icon="@drawable/go_to_album"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/artistMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Go to artist"
+                app:icon="@drawable/artist"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/songRadioMO"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="Go to song radio"
+                app:icon="@drawable/song_radio"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/songCreditsMO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/SpBlack"
+                android:gravity="start|center"
+                android:text="View song credits"
+                app:icon="@drawable/song_credits"
+                app:iconSize="35dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
