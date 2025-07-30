@@ -6,4 +6,5 @@
         android:toYDelta="100%" /> <alpha
     android:duration="@android:integer/config_shortAnimTime"
     android:fromAlpha="1.0"
-    android:toAlpha="0.0" /> </set>
+    android:toAlpha="0.0" />
+</set>

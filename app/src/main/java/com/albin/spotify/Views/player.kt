@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.media.MediaTimestamp
 import android.os.Build
@@ -51,9 +52,10 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         lateinit var playerBinding: ActivityPlayerBinding
 
     }
-
-
+    val whiteColor = ContextCompat.getColor(this, R.color.white)
+    val greenColor = ContextCompat.getColor(this, R.color.green)
     var startY:Float=0f
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -187,20 +189,31 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             if (isRepeat==false)
             {
                 isRepeat=true
-                playerBinding.repeatBtn.setBackgroundColor(Color.RED)
+
+                playerBinding.repeatBtn.setColorFilter(greenColor, PorterDuff.Mode.SRC_IN)
             }
             else
             {
                 isRepeat=false
-                playerBinding.repeatBtn.setBackgroundColor(Color.BLACK)
+
+
+                playerBinding.repeatBtn.setColorFilter(whiteColor, PorterDuff.Mode.SRC_IN)
             }
         }
 
         // 3 dots
-
         playerBinding.favBtn.setOnClickListener {
-            val moreOPtionsIntent=Intent(this, MoreOPtions::class.java)
-            startActivity(moreOPtionsIntent)
+            val moreOptionsIntent=Intent(this, MoreOPtions::class.java)
+            moreOptionsIntent.putExtra("position",position)
+            startActivity(moreOptionsIntent)
+        }
+
+        //sleeper setup
+
+        playerBinding.timerBtn.setOnClickListener {
+
+            val timerIntent= Intent(this, SleepTimer::class.java)
+            startActivity(timerIntent)
         }
     }
 
@@ -251,6 +264,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             .centerCrop().into(playerBinding.shapeableImageView)
 
         playerBinding.appCompatTextView.text=PlayermusicList[position].title.toString()
+         playerBinding.appCompatTextView.setSelected(true)
 
 
     }
