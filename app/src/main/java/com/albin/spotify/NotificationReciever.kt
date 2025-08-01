@@ -114,6 +114,7 @@ class NotificationReciever: BroadcastReceiver() {
            player.musicservice!!.showNotification()
             player.isPlaying=false
           playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
+           Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.playandpause)
 
 
        }else {
@@ -121,6 +122,7 @@ class NotificationReciever: BroadcastReceiver() {
            player.musicservice!!.showNotification()
            player.isPlaying = true
            playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+           Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.miniplayer_pause)
        }
     }
 

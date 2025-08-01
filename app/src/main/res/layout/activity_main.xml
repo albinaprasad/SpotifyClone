@@ -143,7 +143,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
+
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmenetCon"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:foregroundGravity="bottom"
+            android:name="com.albin.spotify.Nowplaying"
+            tools:layout="@layout/fragment_nowplaying"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </androidx.fragment.app.FragmentContainerView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
