@@ -8,6 +8,7 @@
     android:orientation="horizontal"
     android:background="@drawable/roundcorner_nowplaying"
     android:padding="8dp"
+
     android:gravity="center_vertical"
     tools:context=".Nowplaying">
 

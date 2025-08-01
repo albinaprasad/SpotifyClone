@@ -1,5 +1,8 @@
 package com.albin.spotify
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +17,22 @@ import com.albin.spotify.Views.player.Companion.position
 import com.albin.spotify.databinding.FragmentNowplayingBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import android.view.MotionEvent
+import android.widget.Toast
+import com.albin.spotify.Views.player.Companion.isRepeat
+import androidx.palette.graphics.Palette
+import android.graphics.Bitmap
+import androidx.core.graphics.ColorUtils
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+
 
 class Nowplaying : Fragment() {
 
+    var startX=0f
 
     companion object{
          var _binding: FragmentNowplayingBinding? = null
@@ -24,6 +40,7 @@ class Nowplaying : Fragment() {
 
     private val binding get() = _binding!!
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,13 +59,63 @@ class Nowplaying : Fragment() {
             }
         }
 
+        //swipe gester for music change
+
+     binding.root.setOnTouchListener {view,event->
+
+         when(event.action)
+         {
+             MotionEvent.ACTION_DOWN -> {
+                 startX = event.x
+                 true
+             }
+
+             MotionEvent.ACTION_UP->{
+
+                 var endX=event.x
+
+                 val differenceX=startX-endX
+
+                 val minSwipeDistance = 100f
+
+                 if (kotlin.math.abs(differenceX) > minSwipeDistance) {
+
+                     if (differenceX > 0) {
+
+                         playNextSong()
+                     } else {
+
+                         playPreviousSong()
+                     }
+                 }
+                 true
+             }
+
+             else -> false
+
+             }
+         }
+//
+
+
         return binding.root
     }
+
+
 
     override fun onResume() {
         super.onResume()
 
         // Add null safety checks
+        setNowplayingLayout()
+
+    }
+
+    private fun setNowplayingLayout() {
+
+
+
+
         if (player.musicservice?.mediaPlayer != null &&
             PlayermusicList.isNotEmpty() &&
             position < PlayermusicList.size) {
@@ -72,6 +139,22 @@ class Nowplaying : Fragment() {
 
             // Update play/pause button based on current state
             updatePlayPauseButton()
+
+            musicservice!!. mediaPlayer?.let {
+                it.stop()
+                it.reset()
+                it.release()
+            }
+            musicservice!!. mediaPlayer = null
+
+            musicservice!!.mediaPlayer= MediaPlayer()
+            musicservice!!. mediaPlayer!!.reset()
+            musicservice!!.mediaPlayer!!.setDataSource(PlayermusicList[position].path)
+            musicservice!!.mediaPlayer!!.prepare()
+            musicservice!!.mediaPlayer!!.start()
+
+
+            setdynamicBackgroundColor()
         }
     }
 
@@ -88,7 +171,7 @@ class Nowplaying : Fragment() {
         }
     }
 
-    private fun playMusic() {
+    private fun playMusic(){
         try {
             binding.miniPlayerPlayPause.setImageResource(R.drawable.pause)
 
@@ -114,4 +197,84 @@ class Nowplaying : Fragment() {
             e.printStackTrace()
         }
     }
+
+
+    fun playNextSong()
+    {
+       // Toast.makeText(requireActivity(),"next", Toast.LENGTH_SHORT).show()
+        if(isRepeat== false) {
+
+            if (position == PlayermusicList.size - 1) {
+                position = 0
+            } else {
+                position++
+            }
+            setNowplayingLayout()
+            player.musicservice!!.showNotification()
+        }
+
+    }
+    private fun playPreviousSong() {
+       /// Toast.makeText(requireActivity(),"previosu", Toast.LENGTH_SHORT).show()
+
+        if (position == 0 )
+        {
+            position=PlayermusicList.size-1
+
+        }
+        else
+        {
+            position--
+        }
+        setNowplayingLayout()
+        player.musicservice!!.showNotification()
+    }
+
+   fun  setdynamicBackgroundColor()
+    {
+        var dynamic_imageUri=PlayermusicList[position].imageuri.toString()
+
+        Glide.with(this)
+            .asBitmap()
+            .load(dynamic_imageUri)
+            .into(object:CustomTarget<Bitmap>(){
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+
+                    Palette.from(resource).generate{ palette->
+                    palette?.let{
+
+                        val dominantColor=it.getDominantColor(Color.parseColor("#2C2C2C"))
+                        applyBackgroundColor(dominantColor)
+                        }
+                    }
+                }
+
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    binding.root.setBackgroundColor(Color.parseColor("#2C2C2C"))
+                }
+            })
+    }
+    private fun applyBackgroundColor(dominantColor: Int) {
+
+        val radius=18f
+        val roundedBackground = GradientDrawable()
+        roundedBackground.shape = GradientDrawable.RECTANGLE
+        roundedBackground.cornerRadius = radius
+
+        val backgroundTint = ColorUtils.blendARGB(
+            dominantColor,      // The color from album art
+            Color.BLACK,        // Mix with black to keep it dark
+            0.30f
+        )
+        val finalBackground = ColorUtils.setAlphaComponent(backgroundTint, 230)
+        //binding.root.setBackgroundColor(finalBackground)
+
+        roundedBackground.setColor(finalBackground)
+        binding.root.background=roundedBackground
+    }
+
 }
