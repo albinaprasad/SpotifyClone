@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.media.MediaTimestamp
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -52,8 +53,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         lateinit var playerBinding: ActivityPlayerBinding
 
     }
-    val whiteColor = ContextCompat.getColor(this, R.color.white)
-    val greenColor = ContextCompat.getColor(this, R.color.green)
+
     var startY:Float=0f
 
 
@@ -62,6 +62,11 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         enableEdgeToEdge()
         playerBinding= ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(playerBinding.root)
+
+        val whiteColor = ContextCompat.getColor(this, R.color.white)
+        val greenColor = ContextCompat.getColor(this, R.color.green)
+
+
 
         // starting the music service
         val serviceintent= Intent(this, musicService::class.java)
@@ -158,7 +163,24 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         //swipe from top to down to go to the mainActivity
         swipeToGoBack()
 
-
+        playerBinding.shareBtn.setOnClickListener { view ->
+            view.animate()
+                .scaleX(0.8f)
+                .scaleY(0.8f)
+                .setDuration(100)
+                .withEndAction {
+                    view.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(100)
+                }
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "audio/*"
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(PlayermusicList[position].path))
+            }
+            startActivity(Intent.createChooser(shareIntent, "Sharing Music"))
+        }
         //seekbar setup
         playerBinding.musicSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(
