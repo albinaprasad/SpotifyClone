@@ -26,6 +26,7 @@ import androidx.core.graphics.ColorUtils
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import com.albin.spotify.Views.Bluethoothactivity
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
@@ -95,7 +96,13 @@ class Nowplaying : Fragment() {
 
              }
          }
-//
+
+        //bluethoot button
+        binding.miniPlayerDevices.setOnClickListener {
+
+            val btlaunchIntent=Intent(requireActivity(), Bluethoothactivity::class.java)
+        }
+
 
 
         return binding.root

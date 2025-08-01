@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".Views.Bluethoothactivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/SpBlack"
+        android:layout_gravity="bottom"
+        android:background="@drawable/roundcorner_nowplaying"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18sp">
+        </TextView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:id="@+id/thisphneBtn"
+            android:text="This phone"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:backgroundTint="@color/moBlack"
+            app:cornerRadius="9dp"
+            app:iconTint="@color/green"
+            app:iconSize="23sp"
+            app:icon="@drawable/mobile">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="2dp"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/moBlack"
+            tools:listitem="@layout/bt_items"
+            android:layout_marginBottom="8dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:id="@+id/searchBt"
+            android:layout_height="wrap_content"
+            android:text="Find Bluetooth devices"
+            android:textSize="9sp"
+            android:gravity="center"
+            android:backgroundTint="@color/moBlack"
+            app:cornerRadius="6dp"
+            app:iconTint="@color/white"
+            app:iconSize="23sp"
+            app:iconGravity="top"
+            app:icon="@drawable/bluethooth"/>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
