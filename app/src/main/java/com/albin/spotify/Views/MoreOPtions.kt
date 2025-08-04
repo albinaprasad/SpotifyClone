@@ -19,6 +19,7 @@ import com.albin.spotify.Views.player.Companion.PlayermusicList
 import com.albin.spotify.Views.player.Companion.playerBinding
 import com.albin.spotify.Views.player.Companion.position
 import com.albin.spotify.databinding.ActivityMoreOptionsBinding
+import com.albin.spotify.favSongFind
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,8 +27,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MoreOPtions : AppCompatActivity() {
 
-    lateinit var moreOptionsBinding: ActivityMoreOptionsBinding
+    companion object{
+        var isFav: Boolean=false
+        var favIndex=-1
+        var songList= ArrayList<Music>()
+    }
 
+    lateinit var moreOptionsBinding: ActivityMoreOptionsBinding
     lateinit var bottomSheet: BottomSheetBehavior<View>
 
     val REQUESTCODE=8
@@ -80,13 +86,37 @@ class MoreOPtions : AppCompatActivity() {
             }
         }
 
+//favourite button
+        moreOptionsBinding.favMO.setOnClickListener {
+            var currentpos=intent.getIntExtra("position",0)
 
+            if( isFav )
+            {
+                isFav=false
+                moreOptionsBinding.favMO.setIconResource(R.drawable.favourite)
+
+                var FavPos=favSongFind(songList[currentpos].id)
+
+                Log.d("fav",FavPos.toString())
+
+                if(FavPos != -1)
+                {
+                    Favourites.FavMusicList.removeAt(FavPos)
+                }
+            }
+            else{
+                isFav=true
+                moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
+                Favourites.FavMusicList.add(songList[currentpos])
+            }
+
+        }
 
 
     }
 
     private fun setImageAndTitle() {
-        var songList= ArrayList<Music>()
+
         songList= MainActivity.musicList
 
 
@@ -101,6 +131,19 @@ class MoreOPtions : AppCompatActivity() {
         moreOptionsBinding.albumNameMO.setSelected(true)
         moreOptionsBinding.artitNameMO.text=artist
         moreOptionsBinding.artitNameMO.setSelected(true)
+
+        favIndex=favSongFind(songList[position].id)
+
+        if( favIndex == -1 )
+        {
+            isFav=false
+            moreOptionsBinding.favMO.setIconResource(R.drawable.favourite)
+        }
+        else
+        {
+            isFav=true
+            moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
+        }
 
 
     }

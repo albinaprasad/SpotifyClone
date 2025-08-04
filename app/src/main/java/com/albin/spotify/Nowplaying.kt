@@ -97,10 +97,11 @@ class Nowplaying : Fragment() {
              }
          }
 
-        //bluethoot button
+        //devices button
         binding.miniPlayerDevices.setOnClickListener {
 
             val btlaunchIntent=Intent(requireActivity(), Bluethoothactivity::class.java)
+            startActivity(btlaunchIntent)
         }
 
 
@@ -112,8 +113,6 @@ class Nowplaying : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        // Add null safety checks
         setNowplayingLayout()
 
     }
@@ -273,8 +272,8 @@ class Nowplaying : Fragment() {
         roundedBackground.cornerRadius = radius
 
         val backgroundTint = ColorUtils.blendARGB(
-            dominantColor,      // The color from album art
-            Color.BLACK,        // Mix with black to keep it dark
+            dominantColor,
+            Color.BLACK,
             0.30f
         )
         val finalBackground = ColorUtils.setAlphaComponent(backgroundTint, 230)

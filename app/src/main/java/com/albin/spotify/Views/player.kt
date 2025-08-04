@@ -34,6 +34,7 @@ import com.albin.spotify.Music
 import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
 import com.albin.spotify.databinding.ActivityPlayerBinding
+import com.albin.spotify.favSongFind
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -49,6 +50,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         var musicservice : musicService?=null
         var isPlaying: Boolean=false
         var isRepeat:Boolean=false
+
 
         lateinit var playerBinding: ActivityPlayerBinding
 
@@ -287,7 +289,6 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
         playerBinding.appCompatTextView.text=PlayermusicList[position].title.toString()
          playerBinding.appCompatTextView.setSelected(true)
-
 
     }
 

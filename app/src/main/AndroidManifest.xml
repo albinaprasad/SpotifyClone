@@ -32,6 +32,7 @@
         tools:targetApi="31">
         <activity
             android:name=".Views.Bluethoothactivity"
+            android:theme="@style/BottomSheetActivityThemeForTimer"
             android:exported="false" />
         <activity
             android:name=".Views.SleepTimer"
@@ -67,7 +68,9 @@
 
         <receiver
             android:name=".NotificationReciever"
-            android:enabled="true"></receiver>
+            android:enabled="true">
+
+        </receiver>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/moBlack"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Views.Favourites">
@@ -12,7 +13,8 @@
         android:id="@+id/headerLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#1A1A1A"
+        android:background="@color/moBlack"
+        android:backgroundTint="@null"
         android:elevation="4dp"
         android:orientation="vertical"
         android:paddingTop="16dp"
@@ -24,7 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@color/moBlack"
             android:text="Favourites"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
@@ -33,6 +35,35 @@
             android:fontFamily="sans-serif-medium" />
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:id="@+id/recyclerViewF"
+        android:background="@color/moBlack"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarThumbVertical="@drawable/custom_scrollbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
+        app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:src="@drawable/add_profile"
+        android:scaleType="centerCrop"
+        app:maxImageSize="28dp"
+        android:backgroundTint="@color/green"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="48dp"
+        android:foregroundGravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

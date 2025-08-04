@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.albin.spotify.Views.Favourites
 import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.ActivityMainBinding
@@ -93,6 +94,13 @@ class MainActivity : AppCompatActivity() {
             adapterSetup()
         }
 
+
+        //fav button features
+        mainBinding.favBtn.setOnClickListener {
+
+            val favIntent= Intent(this, Favourites::class.java)
+            startActivity(favIntent)
+        }
 
     }
 
