@@ -1,11 +1,13 @@
 package com.albin.spotify
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Adapter
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
+import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.FavouriteViewElementsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -31,6 +33,17 @@ class FavouriteAdapter(var context: Context,var musicList: List<Music>) : Recycl
             .into(holder.favBinding.songImgF)
 
         holder.favBinding.songNameF.text=musicList[position].title
+
+        holder.favBinding.root.setOnClickListener {
+
+            var favAdapterIntent=Intent(context,player::class.java)
+            favAdapterIntent.putExtra("favSongIndex",position)
+            favAdapterIntent.setAction("FavAdapter")
+            context.startActivity(favAdapterIntent)
+
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -40,5 +53,6 @@ class FavouriteAdapter(var context: Context,var musicList: List<Music>) : Recycl
 
     class favViewBinder(val favBinding: FavouriteViewElementsBinding):RecyclerView.ViewHolder(favBinding.root){
 
+        var root=favBinding.root
     }
 }

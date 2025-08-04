@@ -45,7 +45,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
 
     companion object{
-        val PlayermusicList = ArrayList<Music>()
+        var PlayermusicList = ArrayList<Music>()
         var position:Int=0
         var musicservice : musicService?=null
         var isPlaying: Boolean=false
@@ -364,7 +364,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
             "Update_the_UI"->{
                 var index: Int= uiintent.getIntExtra("position",0)
-        Glide.with(this).load(PlayermusicList[index].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
+                Glide.with(this).load(PlayermusicList[index].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
             .centerCrop().into(playerBinding.shapeableImageView)
         playerBinding.Pausebtn.setIconResource(R.drawable.pause)
         playerBinding.appCompatTextView.text=PlayermusicList[index].title.toString()
@@ -377,6 +377,20 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
                     .centerCrop().into(playerBinding.shapeableImageView)
                 playerBinding.Pausebtn.setIconResource(R.drawable.pause)
                 playerBinding.appCompatTextView.text=PlayermusicList[index].title.toString()
+            }
+
+            "FavAdapter"->{
+
+                val intent= Intent(this, musicService::class.java)
+                bindService(intent,this,BIND_AUTO_CREATE)
+                startService(intent)
+
+                position=0
+                PlayermusicList=ArrayList()
+                PlayermusicList.addAll(Favourites.FavMusicList)
+                setMediaPlayer()
+                setLayout()
+
             }
         }
     }
