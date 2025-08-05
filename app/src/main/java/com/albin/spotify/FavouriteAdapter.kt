@@ -39,7 +39,6 @@ class FavouriteAdapter(var context: Context,var musicList: List<Music>) : Recycl
         holder.favBinding.songImgF.setOnClickListener {
 
             var favAdapterIntent=Intent(context,player::class.java)
-            favAdapterIntent.putExtra("favSongIndex",position)
             favAdapterIntent.setAction("FavAdapter")
             favAdapterIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             context.startActivity(favAdapterIntent)

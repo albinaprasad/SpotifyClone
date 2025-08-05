@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
+
 }
 
 android {
@@ -57,4 +59,10 @@ dependencies {
     //glide
     implementation(libs.glide)
     kapt(libs.glide.compiler)
+
+    //gson
+    implementation(libs.gson)
+
+    // Add the serialization library here
+    implementation(libs.kotlinx.serialization.json)
 }

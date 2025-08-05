@@ -10,6 +10,7 @@
 
     <!-- Header -->
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:id="@+id/headerLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,6 +23,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:background="@color/moBlack"
+            android:id="@+id/sortBtn"
+            android:src="@drawable/grid_view"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:scaleX="0.7"
+            android:scaleY="0.7">
+
+        </ImageButton>
 
         <TextView
             android:layout_width="0dp"
@@ -38,10 +51,12 @@
 
         <ImageButton
             android:layout_width="0dp"
+            android:background="@color/moBlack"
             android:id="@+id/layoutChangeBtn"
-            android:src=""
+            android:src="@drawable/grid_view"
             android:layout_height="match_parent"
-            android:layout_weight="0.4">
+            android:layout_weight="0.4"
+            >
 
         </ImageButton>
     </LinearLayout>

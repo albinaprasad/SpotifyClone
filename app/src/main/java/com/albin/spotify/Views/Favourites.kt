@@ -1,6 +1,10 @@
 package com.albin.spotify.Views
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import com.google.gson.GsonBuilder
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +16,7 @@ import com.albin.spotify.MainActivity
 import com.albin.spotify.Music
 import com.albin.spotify.R
 import com.albin.spotify.databinding.ActivityFavouritesBinding
+import com.google.gson.reflect.TypeToken
 
 class Favourites : AppCompatActivity() {
 
@@ -20,6 +25,7 @@ class Favourites : AppCompatActivity() {
 
     companion object{
         var FavMusicList: ArrayList<Music> = ArrayList()
+        var isGrid:Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +40,29 @@ class Favourites : AppCompatActivity() {
         adapter = FavouriteAdapter(this@Favourites,FavMusicList)
 
         favBinding.recyclerViewF.adapter=adapter
+
+
+
+
+        //grid and list layout setup
+
+        favBinding.layoutChangeBtn.setOnClickListener {
+
+
+            if (isGrid)
+            {
+                isGrid=false
+                favBinding.recyclerViewF.layoutManager = LinearLayoutManager(this)
+                favBinding.layoutChangeBtn.setImageResource(R.drawable.list_view)
+
+            }
+            else{
+                isGrid=true
+                favBinding.recyclerViewF.layoutManager= GridLayoutManager(this@Favourites,4)
+                favBinding.layoutChangeBtn.setImageResource(R.drawable.grid_view)
+            }
+
+        }
 
     }
 }

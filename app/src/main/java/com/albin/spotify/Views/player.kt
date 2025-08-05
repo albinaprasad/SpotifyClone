@@ -81,16 +81,11 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
         Log.d("position",position.toString())
 
-
         if (intent.action=="FavAdapter")
-            {
-            val intent= Intent(this, musicService::class.java)
-            bindService(intent,this,BIND_AUTO_CREATE)
-            startService(intent)
+        {
             Toast.makeText(this@player,"player clicked",Toast.LENGTH_SHORT).show()
             PlayermusicList.clear()
             PlayermusicList.addAll(Favourites.FavMusicList)
-
             setMediaPlayer()
         }
 

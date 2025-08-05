@@ -3,12 +3,14 @@ package com.albin.spotify
 import android.annotation.SuppressLint
 import android.app.Service.STOP_FOREGROUND_REMOVE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -23,9 +25,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.albin.spotify.Views.Favourites
+
 import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.ActivityMainBinding
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -48,6 +53,19 @@ class MainActivity : AppCompatActivity() {
 
         // Request permission for the storage access
         requestPermission()
+
+
+        Favourites.FavMusicList = ArrayList()
+        var editor: SharedPreferences = getSharedPreferences("Favourites", MODE_PRIVATE)
+        var typeToken= object:TypeToken<ArrayList<Music>>(){}.type
+        val jsonString= editor.getString("Fav_songs",null)
+
+        if(jsonString!= null)
+        {
+            val data: ArrayList<Music> = GsonBuilder().create().fromJson(jsonString,typeToken)
+            Favourites.FavMusicList.addAll(data)
+        }
+
 
 
 
@@ -112,6 +130,11 @@ class MainActivity : AppCompatActivity() {
         val adapter = MusicAdapter(this, musicList)
         mainBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView.adapter = adapter
+
+
+        //restore data from shared prefernces
+
+
     }
 
     // Check if permission is granted
@@ -211,8 +234,20 @@ class MainActivity : AppCompatActivity() {
         return tempMusicList
     }
 
+    override fun onResume() {
+        super.onResume()
+        val editor = getSharedPreferences("Favourites", MODE_PRIVATE).edit()
+        val jsonString = GsonBuilder().create().toJson(Favourites.FavMusicList)
+
+        Log.d("MoreOptions", "from main Saving FavMusicList: $jsonString")
+
+        editor.putString("Fav_songs", jsonString)
+        editor.apply()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+
         if(player.isPlaying == false && player.musicservice != null)
         {
         player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
@@ -220,5 +255,6 @@ class MainActivity : AppCompatActivity() {
             player.musicservice=null
             exitProcess(1)
         }
+
     }
 }

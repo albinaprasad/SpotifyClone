@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.GsonBuilder
 
 class MoreOPtions : AppCompatActivity() {
 
@@ -102,6 +103,7 @@ class MoreOPtions : AppCompatActivity() {
                 if(FavPos != -1)
                 {
                     Favourites.FavMusicList.removeAt(FavPos)
+                    //saveFavorites()
                 }
             }
             else{
@@ -109,6 +111,7 @@ class MoreOPtions : AppCompatActivity() {
                 moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
                 Favourites.FavMusicList.add(songList[currentpos])
                 Log.d("fav", "music list size"+ Favourites.FavMusicList.toString())
+                //saveFavorites()
             }
 
         }
@@ -139,11 +142,13 @@ class MoreOPtions : AppCompatActivity() {
         {
             isFav=false
             moreOptionsBinding.favMO.setIconResource(R.drawable.favourite)
+
         }
         else
         {
             isFav=true
             moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
+
         }
 
 
@@ -174,5 +179,14 @@ class MoreOPtions : AppCompatActivity() {
         {
             return
         }
+    }
+
+    private fun saveFavorites() {
+        val prefs = getSharedPreferences("Favourites", MODE_PRIVATE)
+        val editor = prefs.edit()
+        val jsonString = GsonBuilder().create().toJson(Favourites.FavMusicList)
+        Log.d("MoreOptions", "Saving FavMusicList: $jsonString")
+        editor.putString("Fav_songs", jsonString)
+        editor.apply()
     }
 }
