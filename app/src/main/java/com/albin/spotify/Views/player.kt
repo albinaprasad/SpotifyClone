@@ -16,6 +16,7 @@ import android.media.MediaTimestamp
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Debug
 import android.os.IBinder
 import android.util.Log
 import android.view.MotionEvent
@@ -79,6 +80,19 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         position=intent.getIntExtra("index",0)
 
         Log.d("position",position.toString())
+
+
+        if (intent.action=="FavAdapter")
+            {
+            val intent= Intent(this, musicService::class.java)
+            bindService(intent,this,BIND_AUTO_CREATE)
+            startService(intent)
+            Toast.makeText(this@player,"player clicked",Toast.LENGTH_SHORT).show()
+            PlayermusicList.clear()
+            PlayermusicList.addAll(Favourites.FavMusicList)
+
+            setMediaPlayer()
+        }
 
 //set the image for music
         setLayout()
@@ -379,19 +393,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
                 playerBinding.appCompatTextView.text=PlayermusicList[index].title.toString()
             }
 
-            "FavAdapter"->{
 
-                val intent= Intent(this, musicService::class.java)
-                bindService(intent,this,BIND_AUTO_CREATE)
-                startService(intent)
-
-                position=0
-                PlayermusicList=ArrayList()
-                PlayermusicList.addAll(Favourites.FavMusicList)
-                setMediaPlayer()
-                setLayout()
-
-            }
         }
     }
 

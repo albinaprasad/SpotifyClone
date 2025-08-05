@@ -50,6 +50,7 @@
         <activity
             android:name=".Views.player"
             android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.Translucent" />
         <activity
             android:name=".MainActivity"

@@ -108,6 +108,7 @@ class MoreOPtions : AppCompatActivity() {
                 isFav=true
                 moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
                 Favourites.FavMusicList.add(songList[currentpos])
+                Log.d("fav", "music list size"+ Favourites.FavMusicList.toString())
             }
 
         }
