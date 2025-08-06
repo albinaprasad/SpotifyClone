@@ -30,6 +30,7 @@ import com.albin.spotify.Views.player
 import com.albin.spotify.Views.player.Companion.musicservice
 import com.albin.spotify.Views.player.Companion.playerBinding
 import kotlinx.coroutines.Runnable
+import kotlin.invoke
 
 
 class musicService: Service() {
