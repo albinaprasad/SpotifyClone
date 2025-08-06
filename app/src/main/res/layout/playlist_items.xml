@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/PLaylist_card"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    app:strokeWidth="1dp"
+    android:backgroundTint="@color/moBlack"
+    app:strokeColor="@color/green"
+    android:layout_margin="12dp">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="170dp"
+        android:id="@+id/playlistImage"
+        android:layout_height="130dp"
+        android:src="@drawable/img_1"
+        android:scaleType="fitCenter"
+        app:shapeAppearanceOverlay="@style/corner_radius"
+        android:elevation="8dp">
+    </com.google.android.material.imageview.ShapeableImageView>
+<TextView
+
+    android:id="@+id/playLitname"
+    android:layout_width="130dp"
+    android:layout_height="40dp"
+    android:padding="4dp"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:text="Playslist Name "
+    android:ellipsize="end"
+    android:autoSizeMaxTextSize="16sp"
+    android:autoSizeMinTextSize="8sp"
+    android:autoSizeStepGranularity="2sp"
+    android:textColor="@color/white"
+    android:layout_marginTop="130dp">
+</TextView>
+    <ImageButton
+        android:id="@+id/playDeleteBtn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:backgroundTint="@color/moBlack"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="130dp"
+        android:src="@drawable/delete_icon">
+    </ImageButton>
+</com.google.android.material.card.MaterialCardView>

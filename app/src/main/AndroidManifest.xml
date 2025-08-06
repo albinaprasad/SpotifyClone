@@ -11,14 +11,15 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-
-    <uses-feature android:name="android.hardware.bluetooth" android:required="true"/>
     <application
         android:name=".Views.applicationClass"
         android:allowBackup="true"
@@ -31,9 +32,12 @@
         android:theme="@style/Theme.SPOTIFY"
         tools:targetApi="31">
         <activity
-            android:name=".Views.Bluethoothactivity"
-            android:theme="@style/BottomSheetActivityThemeForTimer"
+            android:name=".Views.Playlists"
             android:exported="false" />
+        <activity
+            android:name=".Views.Bluethoothactivity"
+            android:exported="false"
+            android:theme="@style/BottomSheetActivityThemeForTimer" />
         <activity
             android:name=".Views.SleepTimer"
             android:exported="false"
@@ -69,9 +73,7 @@
 
         <receiver
             android:name=".NotificationReciever"
-            android:enabled="true">
-
-        </receiver>
+            android:enabled="true"></receiver>
     </application>
 
 </manifest>

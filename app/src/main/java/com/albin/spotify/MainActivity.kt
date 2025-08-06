@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.albin.spotify.Views.Favourites
 
 import com.albin.spotify.Views.MusicAdapter
+import com.albin.spotify.Views.Playlists
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.ActivityMainBinding
 import com.google.gson.GsonBuilder
@@ -66,7 +68,12 @@ class MainActivity : AppCompatActivity() {
             Favourites.FavMusicList.addAll(data)
         }
 
+//playlits adding
 
+        mainBinding.PlayListBtn.setOnClickListener {
+            val playListintent= Intent(this@MainActivity, Playlists::class.java)
+            startActivity(playListintent)
+        }
 
 
         // Navigation bar set up
@@ -98,6 +105,8 @@ class MainActivity : AppCompatActivity() {
             mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
             true
         }
+        //navbar animatin
+        navbarAnimationSetUp()
 
         //shuffle BUtton
 
@@ -122,6 +131,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(favIntent)
         }
 
+    }
+
+     fun navbarAnimationSetUp() {
+
+         mainBinding.drawerlayout.addDrawerListener(object: DrawerLayout.DrawerListener{
+             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+                 var moveDistance=drawerView.width*slideOffset
+                 mainBinding.main.translationX=moveDistance
+             }
+
+             override fun onDrawerOpened(drawerView: View) {
+
+             }
+
+             override fun onDrawerClosed(drawerView: View) {
+
+             }
+
+             override fun onDrawerStateChanged(newState: Int) {
+
+             }
+         })
     }
 
     private fun adapterSetup() {
@@ -255,5 +287,12 @@ class MainActivity : AppCompatActivity() {
             exitProcess(1)
         }
 
+    }
+    override fun onBackPressed() {
+        if (mainBinding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
+            mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }

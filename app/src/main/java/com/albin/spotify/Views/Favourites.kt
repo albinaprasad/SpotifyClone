@@ -26,7 +26,7 @@ class Favourites : AppCompatActivity() {
     companion object{
         var FavMusicList: ArrayList<Music> = ArrayList()
         var isGrid:Boolean = true
-        var isShuffle=false
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
