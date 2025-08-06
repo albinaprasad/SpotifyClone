@@ -257,7 +257,10 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         playerBinding.timerBtn.setOnClickListener {
 
             val timerIntent= Intent(this, SleepTimer::class.java)
-            timerIntent.putExtra("duration",)
+            timerIntent.putExtra("duration",PlayermusicList[position].duration)
+
+            Log.d("Time ","duration send"+PlayermusicList[position].duration.toString())
+
             startActivity(timerIntent)
         }
     }

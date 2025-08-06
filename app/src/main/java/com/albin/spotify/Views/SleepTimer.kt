@@ -9,7 +9,9 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -57,32 +59,48 @@ class SleepTimer : AppCompatActivity() {
 
         //10 min
         sleepBinding.TenMin.setOnClickListener {
-            setTimer("Ten_min", 10*60*1000L, sleepBinding.TenMin)
+            setTimer("ten_min", 10*60*1000L, sleepBinding.TenMin)
         }
         //15 min
 
         sleepBinding.FifteenMin.setOnClickListener {
-            setTimer("15min",15*60*1000L,sleepBinding.FifteenMin)
+            setTimer("fifteen_min",15*60*1000L,sleepBinding.FifteenMin)
         }
 
         //30 min
         sleepBinding.ThirtyMin.setOnClickListener {
-            setTimer("30min",30*60*1000L,sleepBinding.ThirtyMin)
+            setTimer("thirty_min",30*60*1000L,sleepBinding.ThirtyMin)
         }
 
         //45min
         sleepBinding.FifteenMin.setOnClickListener {
-            setTimer("45min",45*60*1000L,sleepBinding.FifteenMin)
+            setTimer("forty_five_min",45*60*1000L,sleepBinding.FifteenMin)
         }
 
         //1hour
         sleepBinding.oneHr.setOnClickListener {
-            setTimer("1hour",60*60*1000L,sleepBinding.oneHr)
+            setTimer("one_hour",60*60*1000L,sleepBinding.oneHr)
         }
 
         //end of track
 
         sleepBinding.EndOfTrakBtn.setOnClickListener {
+
+            val duration=intent.getLongExtra("duration",0L)
+            val currentpostion=player.musicservice!!.mediaPlayer!!.currentPosition
+
+            var timeDiff=duration-currentpostion
+            if( timeDiff > 0 )
+            {
+                setTimer("end_of_track",timeDiff,sleepBinding.EndOfTrakBtn)
+            }
+            else
+            {
+                Toast.makeText(applicationContext,"Cant set timer",Toast.LENGTH_SHORT).show()
+            }
+
+            Log.d("Time",duration.toString())
+            Log.d("Time",currentpostion.toString())
 
         }
 
