@@ -25,7 +25,8 @@ class Favourites : AppCompatActivity() {
 
     companion object{
         var FavMusicList: ArrayList<Music> = ArrayList()
-        var isGrid:Boolean = false
+        var isGrid:Boolean = true
+        var isShuffle=false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,6 @@ class Favourites : AppCompatActivity() {
 
         favBinding.layoutChangeBtn.setOnClickListener {
 
-
             if (isGrid)
             {
                 isGrid=false
@@ -62,6 +62,14 @@ class Favourites : AppCompatActivity() {
                 favBinding.layoutChangeBtn.setImageResource(R.drawable.grid_view)
             }
 
+        }
+
+        favBinding.shuffleBtn.setOnClickListener {
+
+            FavMusicList.shuffle()
+            favBinding.recyclerViewF.adapter?.notifyDataSetChanged()
+
+            Toast.makeText(applicationContext,"Favourites shuffled ", Toast.LENGTH_SHORT).show()
         }
 
     }

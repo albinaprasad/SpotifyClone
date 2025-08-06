@@ -98,7 +98,9 @@ class MainActivity : AppCompatActivity() {
             mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
             true
         }
-//shuffle BUtton
+
+        //shuffle BUtton
+
         mainBinding.shuffleBtn.setOnClickListener {
             musicList.shuffle()
           mainBinding.recyclerView.adapter?.notifyDataSetChanged()
@@ -130,9 +132,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = MusicAdapter(this, musicList)
         mainBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView.adapter = adapter
-
-
-        //restore data from shared prefernces
 
 
     }

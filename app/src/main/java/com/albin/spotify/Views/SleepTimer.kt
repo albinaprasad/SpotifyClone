@@ -1,10 +1,12 @@
 package com.albin.spotify.Views
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.albin.spotify.R
@@ -31,6 +33,7 @@ class SleepTimer : AppCompatActivity() {
         sleepBinding= ActivitySleepTimerBinding.inflate(layoutInflater)
         setContentView(sleepBinding.root)
 
+//five min button
 
         //setting up the bottomsheet
 
@@ -61,7 +64,16 @@ class SleepTimer : AppCompatActivity() {
             }
         })
 
+        fun resetAllButton(){
+            val whiteColor = ContextCompat.getColor(this, R.color.white)
 
+            sleepBinding.fiveMin.setTextColor(ColorStateList.valueOf(whiteColor))
+            sleepBinding.TenMin.setTextColor(ColorStateList.valueOf(whiteColor))
+            sleepBinding.FifteenMin.setTextColor(ColorStateList.valueOf(whiteColor))
+            sleepBinding.ThirtyMin.setTextColor(ColorStateList.valueOf(whiteColor))
+            sleepBinding.FortyFiveMin.setTextColor(ColorStateList.valueOf(whiteColor))
+            sleepBinding.EndOfTrakBtn.setTextColor(ColorStateList.valueOf(whiteColor))
+        }
 
     }
 }

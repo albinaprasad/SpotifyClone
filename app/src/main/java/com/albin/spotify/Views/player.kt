@@ -72,14 +72,18 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
 
         // starting the music service
-        val serviceintent= Intent(this, musicService::class.java)
-        bindService(serviceintent,this,BIND_AUTO_CREATE)
-        startService(serviceintent)
 
-        PlayermusicList.addAll(MainActivity.musicList)
-        position=intent.getIntExtra("index",0)
+        if (intent.action=="mainIntent")
+        {
+            PlayermusicList.clear()
+            PlayermusicList.addAll(MainActivity.musicList)
+            position=intent.getIntExtra("index",0)
+            val serviceintent= Intent(this, musicService::class.java)
+            bindService(serviceintent,this,BIND_AUTO_CREATE)
+            startService(serviceintent)
+            Log.d("position",position.toString())
+        }
 
-        Log.d("position",position.toString())
 
         if (intent.action=="FavAdapter")
         {
@@ -89,8 +93,12 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             Toast.makeText(this@player,"player clicked",Toast.LENGTH_SHORT).show()
             PlayermusicList.clear()
             PlayermusicList.addAll(Favourites.FavMusicList)
-            setMediaPlayer()
+            //setMediaPlayer()
         }
+
+        val serviceintent = Intent(this, musicService::class.java)
+        bindService(serviceintent, this, BIND_AUTO_CREATE)
+        startService(serviceintent)
 
 //set the image for music
         setLayout()

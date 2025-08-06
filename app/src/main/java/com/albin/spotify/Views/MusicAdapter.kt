@@ -40,6 +40,7 @@ class MusicAdapter(val context: Context,var musicList: ArrayList<Music>) : Recyc
 
             val intent= Intent(context, player::class.java)
             intent.putExtra("index",position)
+            intent.setAction("mainIntent")
             Log.d("position",position.toString())
             context.startActivity(intent)
 
