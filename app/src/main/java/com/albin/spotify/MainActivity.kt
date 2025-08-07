@@ -26,7 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.albin.spotify.Views.Favourites
-
+import com.google.gson.JsonSyntaxException
 import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.Playlists
 import com.albin.spotify.Views.player
@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity() {
 
 
         Favourites.FavMusicList = ArrayList()
-        var editor: SharedPreferences = getSharedPreferences("Favourites", MODE_PRIVATE)
+        var editor: SharedPreferences = getSharedPreferences("Favourite", MODE_PRIVATE)
         var typeToken= object:TypeToken<ArrayList<Music>>(){}.type
         val jsonString= editor.getString("Fav_songs",null)
 
         if(jsonString!= null)
         {
-            val data: ArrayList<Music> = GsonBuilder().create().fromJson(jsonString,typeToken)
+            val data: ArrayList<Music> = GsonBuilder().setLenient().create().fromJson(jsonString,typeToken)
             Favourites.FavMusicList.addAll(data)
         }
 
@@ -162,6 +162,7 @@ class MainActivity : AppCompatActivity() {
         musicList.addAll(readAllMusic())
 
         val adapter = MusicAdapter(this, musicList)
+        mainBinding.recyclerView.setItemViewCacheSize(10)
         mainBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         mainBinding.recyclerView.adapter = adapter
 
@@ -267,8 +268,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val editor = getSharedPreferences("Favourites", MODE_PRIVATE).edit()
-        val jsonString = GsonBuilder().create().toJson(Favourites.FavMusicList)
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        val editor = getSharedPreferences("Favourite", MODE_PRIVATE).edit()
+        val jsonString = gson.toJson(Favourites.FavMusicList)
 
         Log.d("MoreOptions", "from main Saving FavMusicList: $jsonString")
 

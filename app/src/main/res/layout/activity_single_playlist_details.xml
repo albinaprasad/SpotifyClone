@@ -3,97 +3,161 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/SpBlack"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Views.SinglePlaylistDetails">
-        <!-- Header -->
-        <LinearLayout
-            android:layout_marginTop="20dp"
-            android:id="@+id/headerLayout"
+    <!-- Header -->
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/headerLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/SpBlack"
+        android:backgroundTint="@null"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:background="@color/SpBlack"
+            android:id="@+id/sortBtn"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:scaleX="0.7"
+            android:scaleY="0.7">
+
+        </ImageButton>
+
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/moBlack"
-            android:backgroundTint="@null"
-            android:elevation="4dp"
-            android:orientation="horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/SpBlack"
+            android:text="PlayList"
+            android:layout_weight="3"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
 
-            <ImageButton
-                android:layout_width="0dp"
-                android:background="@color/moBlack"
-                android:id="@+id/sortBtn"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:scaleX="0.7"
-                android:scaleY="0.7">
+        <ImageButton
+            android:layout_width="0dp"
+            android:background="@color/SpBlack"
+            android:id="@+id/addSong"
+            android:src="@drawable/plus"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+        </ImageButton>
 
-            </ImageButton>
+        <ImageButton
+            android:layout_width="0dp"
+            android:background="@color/SpBlack"
+            android:id="@+id/removeAll"
+            android:src="@drawable/delete_icon"
+            android:layout_height="match_parent"
+            app:tint="@color/white"
+            android:layout_weight="0.4">
+        </ImageButton>
+    </LinearLayout>
+
+    <!-- Playlist Info Section -->
+    <LinearLayout
+        android:id="@+id/playlistInfoLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:background="@color/SpBlack"
+        android:padding="12dp"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/playlistImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img"
+            app:rippleColor="#9E18D7"
+            app:shapeAppearanceOverlay="@style/corner_radius"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="4dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/playlistNameText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/moBlack"
-                android:text="PlayList name"
-                android:layout_weight="3"
-                android:textAlignment="center"
+                android:text="Playlist Name"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="20sp"
+                android:textStyle="bold|italic"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="8dp" />
 
+            <TextView
+                android:id="@+id/totalSongsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="25 songs"
+                android:textStyle="italic"
+                android:textColor="#CCCCCC"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif" />
 
-            <ImageButton
-                android:layout_width="0dp"
-                android:background="@color/moBlack"
-                android:id="@+id/layoutChangeBtn"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                >
-
-            </ImageButton>
         </LinearLayout>
-
-
-
-
-
-
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewF"
+        android:id="@+id/recyclerViewP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="432dp"
-        android:background="@color/moBlack"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/SpBlack"
         android:padding="5dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbarThumbVertical="@drawable/custom_scrollbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+        app:layout_constraintTop_toBottomOf="@+id/playlistInfoLayout">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="80dp"
-            android:layout_height="60dp"
-            android:src="@drawable/shuffle_icon"
-            android:scaleType="fitXY"
-            app:maxImageSize="28dp"
-            android:id="@+id/shuffleBtn"
-            android:backgroundTint="@color/green"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="48dp"
-            android:foregroundGravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:src="@drawable/shuffle_icon"
+        android:scaleType="fitXY"
+        app:maxImageSize="28dp"
+        android:id="@+id/shuffleBtn"
+        android:visibility="invisible"
+        android:backgroundTint="@color/green"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="48dp"
+        android:foregroundGravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

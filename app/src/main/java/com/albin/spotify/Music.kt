@@ -6,7 +6,6 @@ import com.albin.spotify.Views.player
 import kotlinx.serialization.Serializable
 
 
-@Serializable
 data class Music (val id: String,val title:String, val singer: String, val duration:Long=0,val path:String,val imageuri: String) {
 
     fun formatDuration(milliseconds: Long): String {

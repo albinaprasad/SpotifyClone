@@ -1,17 +1,20 @@
 package com.albin.spotify
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.albin.spotify.Views.Playlists
+import com.albin.spotify.Views.SinglePlaylistDetails
+import com.albin.spotify.Views.SinglePlaylistDetails.Companion.curentplayListPos
 import com.albin.spotify.Views.createPlaylist
 import com.albin.spotify.databinding.PlaylistItemsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class PlayListAdapter(var context: Context,var PlaylistsList: ArrayList<Playlist>): RecyclerView.Adapter<PlayListAdapter.playlistViewHolder>(){
+class PlayListAdapter(var context: Context,var PlaylistsList: ArrayList<Playlist>,): RecyclerView.Adapter<PlayListAdapter.playlistViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -45,6 +48,23 @@ class PlayListAdapter(var context: Context,var PlaylistsList: ArrayList<Playlist
 
             builder.show()
         }
+
+        holder.playlitsItemBinding.playlistImage.setOnClickListener {
+            val singlePlaylistIntent = Intent(context, SinglePlaylistDetails::class.java)
+            context.startActivity(singlePlaylistIntent)
+        }
+
+        if(createPlaylist.musicPlaylitObj.ref[position].playlist.size> 0)
+        {
+
+            Glide.with(context).load(createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist[0].imageuri
+            ).apply(RequestOptions()
+                .placeholder(R.drawable.musical_icon))
+                .circleCrop()
+                .into(holder.playlitsItemBinding.playlistImage)
+            notifyDataSetChanged()
+        }
+
 
     }
 
