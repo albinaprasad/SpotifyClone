@@ -14,9 +14,18 @@ data class Music (val id: String,val title:String, val singer: String, val durat
         val minutes = totalSeconds / 60
         val seconds = totalSeconds % 60
         return String.format("%02d:%02d", minutes, seconds)
-
-
     }
+}
+
+class Playlist{
+    lateinit var playlistname:String
+    lateinit var  playlist: ArrayList<Music>
+    lateinit var createdon:String
+}
+
+
+class MusicPlaylit{
+    var ref= ArrayList<Playlist>()
 }
 fun favSongFind( Id:String): Int {
 

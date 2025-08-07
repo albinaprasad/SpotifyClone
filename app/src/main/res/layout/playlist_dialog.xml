@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/main"
+    android:background="@color/moBlack"
+    tools:context=".Views.createPlaylist">
+
+    <TextView
+        android:layout_marginTop="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Give your playlist a name"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:textSize="22dp"
+        >
+    </TextView>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="#EB897979"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter the playlist Name"
+            android:id="@+id/playlistET"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            app:endIconMode="clear_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelBtn"
+            android:layout_width="103dp"
+            android:layout_height="52dp"
+            android:text="cancel"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/transparent"
+            app:strokeColor="#EB897979"
+            app:strokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/createBtn"
+            android:layout_width="103dp"
+            android:layout_height="52dp"
+            android:text="create"
+            android:textColor="@color/moBlack"
+            android:backgroundTint="@color/green"
+            android:textSize="14dp"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.albin.spotify.Views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,9 @@ import com.albin.spotify.databinding.ActivityPlaylistsBinding
 class Playlists : AppCompatActivity() {
 
     lateinit var playBinding: ActivityPlaylistsBinding
+    companion object{
+        lateinit var playlistadapter: PlayListAdapter
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,8 @@ class Playlists : AppCompatActivity() {
 
         playBinding= ActivityPlaylistsBinding.inflate(layoutInflater)
         setContentView(playBinding.root)
+
+
 
         playBinding.profileBtn.setOnClickListener {
             playBinding.drawerlayout.openDrawer(GravityCompat.START)
@@ -78,11 +84,16 @@ class Playlists : AppCompatActivity() {
 
         //adapter setup
         playBinding.playListRV.layoutManager= GridLayoutManager(this@Playlists,2)
-
-       val playlistadapter= PlayListAdapter(this, MainActivity.musicList)
-
+         playlistadapter= PlayListAdapter(this, createPlaylist.musicPlaylitObj.ref)
         playBinding.playListRV.adapter=playlistadapter
 
+
+        //create new playlists
+
+        playBinding.addPlaylist.setOnClickListener {
+            val addplayListintent= Intent(this@Playlists, createPlaylist::class.java)
+            startActivity(addplayListintent)
+        }
 
     }
 
@@ -93,5 +104,10 @@ class Playlists : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        playlistadapter.refreshPlaylistData()
     }
 }

@@ -3,12 +3,15 @@ package com.albin.spotify
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.albin.spotify.Views.Playlists
+import com.albin.spotify.Views.createPlaylist
 import com.albin.spotify.databinding.PlaylistItemsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class PlayListAdapter(var context: Context,var PlaylistsList: List<Music>): RecyclerView.Adapter<PlayListAdapter.playlistViewHolder>(){
+class PlayListAdapter(var context: Context,var PlaylistsList: ArrayList<Playlist>): RecyclerView.Adapter<PlayListAdapter.playlistViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,11 +24,28 @@ class PlayListAdapter(var context: Context,var PlaylistsList: List<Music>): Recy
         holder: playlistViewHolder,
         position: Int
     ) {
-        Glide.with(context).load(PlaylistsList[position]
-            .imageuri).apply(RequestOptions()
-            .placeholder(R.drawable.musical_icon))
-            .circleCrop()
-            .into(holder.playlitsItemBinding.playlistImage)
+
+        holder.playlitsItemBinding.playLitname.text = PlaylistsList[position].playlistname.toString()
+        holder.playlitsItemBinding.playDeleteBtn.setOnClickListener {
+
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(PlaylistsList[position].playlistname)
+            builder.setMessage("Do you need to delete the Playlist?")
+            builder.setPositiveButton("OK") { dialog, which ->
+
+               createPlaylist.musicPlaylitObj.ref.removeAt(position)
+                Playlists.playlistadapter.refreshPlaylistData()
+            dialog.dismiss()
+            }
+
+            builder.setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
+            }
+            
+
+            builder.show()
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -36,4 +56,14 @@ class PlayListAdapter(var context: Context,var PlaylistsList: List<Music>): Recy
     class playlistViewHolder(val playlitsItemBinding: PlaylistItemsBinding): RecyclerView.ViewHolder(playlitsItemBinding.root){
 
     }
+
+
+        fun refreshPlaylistData()
+        {
+            PlaylistsList= ArrayList()
+            PlaylistsList.addAll(createPlaylist.musicPlaylitObj.ref)
+            notifyDataSetChanged()
+        }
+
+
 }
