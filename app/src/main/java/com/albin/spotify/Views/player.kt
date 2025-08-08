@@ -34,6 +34,7 @@ import com.albin.spotify.MainActivity
 import com.albin.spotify.Music
 import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
+import com.albin.spotify.Views.SinglePlaylistDetails.Companion.curentplayListPos
 import com.albin.spotify.databinding.ActivityPlayerBinding
 import com.albin.spotify.favSongFind
 import com.bumptech.glide.Glide
@@ -95,6 +96,20 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             PlayermusicList.addAll(Favourites.FavMusicList)
             //setMediaPlayer()
         }
+
+        if(intent.action == "PLAYLIST") {
+            val intent= Intent(this, musicService::class.java)
+            bindService(intent,this,BIND_AUTO_CREATE)
+            startService(intent)
+
+            var pos = intent.getIntExtra("playlistIndex",0)
+            position = intent.getIntExtra("index", 0)
+
+            Toast.makeText(this@player,"player clicked",Toast.LENGTH_SHORT).show()
+            PlayermusicList.clear()
+            PlayermusicList.addAll(createPlaylist.musicPlaylitObj.ref[pos].playlist)
+            }
+
 
         val serviceintent = Intent(this, musicService::class.java)
         bindService(serviceintent, this, BIND_AUTO_CREATE)

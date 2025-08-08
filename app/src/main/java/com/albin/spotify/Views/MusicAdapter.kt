@@ -12,7 +12,7 @@ import com.albin.spotify.databinding.SongDetailsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class MusicAdapter(val context: Context,var musicList: ArrayList<Music>) : RecyclerView.Adapter<MusicAdapter.musicViewHolder>(){
+class MusicAdapter(val context: Context,var musicList: ArrayList<Music>,var plalist:Boolean=false) : RecyclerView.Adapter<MusicAdapter.musicViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,11 +38,23 @@ class MusicAdapter(val context: Context,var musicList: ArrayList<Music>) : Recyc
         //click on the cardview to make the music-player activity
         holder.musicBinding.card.setOnClickListener {
 
-            val intent= Intent(context, player::class.java)
-            intent.putExtra("index",position)
-            intent.setAction("mainIntent")
-            Log.d("position",position.toString())
-            context.startActivity(intent)
+            when{
+                plalist->{
+                    val plaintent= Intent(context, player::class.java)
+                    plaintent.putExtra("playlistIndex", SinglePlaylistDetails.curentplayListPos)
+                    plaintent.putExtra("index", player.Companion.position)
+                    plaintent.setAction("PLAYLIST")
+
+                    context.startActivity(plaintent)
+                }
+                else->{
+                    val intent= Intent(context, player::class.java)
+                    intent.putExtra("index",position)
+                    intent.setAction("mainIntent")
+                    Log.d("position",position.toString())
+                    context.startActivity(intent)
+                }
+            }
 
         }
     }

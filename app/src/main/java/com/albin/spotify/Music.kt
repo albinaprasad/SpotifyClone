@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 
 data class Music (val id: String,val title:String, val singer: String, val duration:Long=0,val path:String,val imageuri: String) {
 
+
     fun formatDuration(milliseconds: Long): String {
         val totalSeconds = milliseconds / 1000
         val minutes = totalSeconds / 60

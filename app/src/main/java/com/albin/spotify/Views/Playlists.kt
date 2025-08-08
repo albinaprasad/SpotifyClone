@@ -83,9 +83,10 @@ class Playlists : AppCompatActivity() {
 
 
         //adapter setup
-        playBinding.playListRV.layoutManager= GridLayoutManager(this@Playlists,2)
-         playlistadapter= PlayListAdapter(this, createPlaylist.musicPlaylitObj.ref)
-        playBinding.playListRV.adapter=playlistadapter
+
+        playBinding.playListRV.layoutManager = GridLayoutManager(this@Playlists,2)
+         playlistadapter = PlayListAdapter(this, createPlaylist.musicPlaylitObj.ref)
+        playBinding.playListRV.adapter = playlistadapter
 
 
         //create new playlists
@@ -107,7 +108,6 @@ class Playlists : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-
         playlistadapter.refreshPlaylistData()
     }
 }
