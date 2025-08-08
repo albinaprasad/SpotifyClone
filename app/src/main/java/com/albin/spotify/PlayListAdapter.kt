@@ -31,7 +31,7 @@ class PlayListAdapter(var context: Context, var PlaylistsList: ArrayList<Playlis
             builder.setMessage("Do you need to delete the Playlist?")
             builder.setPositiveButton("OK") { dialog, which ->
                 createPlaylist.musicPlaylitObj.ref.removeAt(position)
-                // Adjust currentPlaylistPos to prevent out-of-bounds
+
                 if (SinglePlaylistDetails.curentplayListPos >= createPlaylist.musicPlaylitObj.ref.size) {
                     SinglePlaylistDetails.curentplayListPos = 0
                 }
@@ -44,7 +44,6 @@ class PlayListAdapter(var context: Context, var PlaylistsList: ArrayList<Playlis
             builder.show()
         }
 
-        // Playlist click to open SinglePlaylistDetails
         holder.playlitsItemBinding.playlistImage.setOnClickListener {
             SinglePlaylistDetails.curentplayListPos = position // Set the correct playlist position
             val singlePlaylistIntent = Intent(context, SinglePlaylistDetails::class.java)
@@ -52,6 +51,7 @@ class PlayListAdapter(var context: Context, var PlaylistsList: ArrayList<Playlis
         }
 
         // Load playlist image
+
         if (createPlaylist.musicPlaylitObj.ref[position].playlist.isNotEmpty()) {
             Glide.with(context)
                 .load(createPlaylist.musicPlaylitObj.ref[position].playlist[0].imageuri)

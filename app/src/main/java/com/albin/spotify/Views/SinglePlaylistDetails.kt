@@ -45,6 +45,9 @@ class SinglePlaylistDetails : AppCompatActivity() {
             val addsongIntent = Intent(this@SinglePlaylistDetails, songSelection::class.java)
             startActivity(addsongIntent)
         }
+
+        //delete al btn
+        binding.
     }
 
     override fun onResume() {
