@@ -104,19 +104,19 @@ class MainActivity : AppCompatActivity() {
         mainBinding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_addprofile -> {
-                    Toast.makeText(applicationContext, "Add account", Toast.LENGTH_SHORT).show()
+                    ToastShower("Add account")
                 }
                 R.id.nav_whatsnew -> {
-                    Toast.makeText(applicationContext, "What's new clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("What's new clicked")
                 }
                 R.id.nav_recents -> {
-                    Toast.makeText(applicationContext, "Recents clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Recents clicked")
                 }
                 R.id.nav_updates -> {
-                    Toast.makeText(applicationContext, "Updates clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Updates clicked")
                 }
                 R.id.nav_settings -> {
-                    Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Settings clicked")
                 }
                 R.id.nav_exit -> {
                     finish() // Add actual exit functionality
@@ -322,5 +322,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             finishAffinity()
         }
+    }
+
+    fun ToastShower(dataToBeDisplayed:String){
+        Toast.makeText(applicationContext,dataToBeDisplayed, Toast.LENGTH_SHORT).show()
     }
 }
