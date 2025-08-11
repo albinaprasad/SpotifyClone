@@ -28,6 +28,8 @@ class Playlists : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+
+
         playBinding= ActivityPlaylistsBinding.inflate(layoutInflater)
         setContentView(playBinding.root)
 

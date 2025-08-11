@@ -29,8 +29,11 @@ import com.albin.spotify.Views.Favourites
 import com.google.gson.JsonSyntaxException
 import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.Playlists
+import com.albin.spotify.Views.SinglePlaylistDetails
+import com.albin.spotify.Views.createPlaylist
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.ActivityMainBinding
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -67,6 +70,24 @@ class MainActivity : AppCompatActivity() {
             val data: ArrayList<Music> = GsonBuilder().setLenient().create().fromJson(jsonString,typeToken)
             Favourites.FavMusicList.addAll(data)
         }
+
+
+        //load the playlists
+
+        val sharedPref: SharedPreferences = getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPref.getString("playlistsKey", null)
+
+        if (json != null) {
+            val type = object : TypeToken<ArrayList<Playlist>>() {}.type
+            val loadedPlaylists: ArrayList<Playlist>? = gson.fromJson(json, type)
+            if (loadedPlaylists != null) {
+                createPlaylist.musicPlaylitObj.ref=loadedPlaylists
+            }
+        }
+
+
+
 
 //playlits adding
 

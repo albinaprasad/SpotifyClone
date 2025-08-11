@@ -1,5 +1,7 @@
 package com.albin.spotify.Views
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -8,7 +10,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.albin.spotify.MusicPlaylit
 import com.albin.spotify.Playlist
+import com.albin.spotify.Views.createPlaylist.Companion.musicPlaylitObj
 import com.albin.spotify.databinding.PlaylistDialogBinding
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -25,7 +29,7 @@ class createPlaylist: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        createBinding= PlaylistDialogBinding.inflate(layoutInflater)
+        createBinding = PlaylistDialogBinding.inflate(layoutInflater)
         setContentView(createBinding.root)
 
 
@@ -68,6 +72,8 @@ class createPlaylist: AppCompatActivity() {
 
                     playlistObj.createdon=sdf.format(calendar.time)
                     musicPlaylitObj.ref.add(playlistObj)
+
+                    funSavePlaylist()
                     finish()
                 }
 
@@ -75,4 +81,13 @@ class createPlaylist: AppCompatActivity() {
         }
 
     }
+}
+
+private fun createPlaylist.funSavePlaylist() {
+    val sharedPref: SharedPreferences = this.getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
+    val editor = sharedPref.edit()
+    val gson = Gson()
+    val json = gson.toJson(musicPlaylitObj.ref)
+    editor.putString("playlistsKey", json)
+    editor.apply()
 }

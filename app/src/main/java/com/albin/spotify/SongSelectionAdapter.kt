@@ -1,7 +1,9 @@
 package com.albin.spotify
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.albin.spotify.Views.MusicAdapter.musicViewHolder
 import com.albin.spotify.Views.SinglePlaylistDetails
 import com.albin.spotify.Views.createPlaylist
+import com.albin.spotify.Views.createPlaylist.Companion.musicPlaylitObj
 import com.albin.spotify.Views.player
 import com.albin.spotify.databinding.SongDetailsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 
 class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>): RecyclerView.Adapter<SongSelectionAdapter.selecioViewHolder>() {
     override fun onCreateViewHolder(
@@ -52,7 +56,7 @@ class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>)
                     {
                         holder.Sbinding.mainLL.setBackgroundColor(Color.parseColor("#121212"))
                     }
-
+                funSavePlaylist()
                 Toast.makeText(context,"Selection adaptyer clicked", Toast.LENGTH_SHORT).show()
             }
     }
@@ -72,10 +76,19 @@ class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>)
             if(Song.id == music.id)
             {
                 createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.removeAt(index)
+
                 return false
             }
         }
         createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.add(Song)
         return true
+    }
+    fun funSavePlaylist() {
+        val sharedPref: SharedPreferences = context.getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        val gson = Gson()
+        val json = gson.toJson(musicPlaylitObj.ref)
+        editor.putString("playlistsKey", json)
+        editor.apply()
     }
 }
