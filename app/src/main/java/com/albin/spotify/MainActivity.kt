@@ -23,6 +23,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.albin.spotify.Views.Favourites
@@ -36,6 +37,9 @@ import com.albin.spotify.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -178,8 +182,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun adapterSetup() {
 
-        musicList.clear()
-        musicList.addAll(readAllMusic())
+
+        lifecycleScope.launch {
+            var readedmusiclist = withContext(Dispatchers.IO){
+                readAllMusic()
+            }
+            musicList.clear()
+            musicList.addAll(readedmusiclist)
+        }
+
+
 
         val adapter = MusicAdapter(this, musicList)
         mainBinding.recyclerView.setItemViewCacheSize(10)
