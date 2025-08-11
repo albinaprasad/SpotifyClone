@@ -190,28 +190,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Check if permission is granted
-    private fun checkPermission(): Boolean {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            android.Manifest.permission.READ_MEDIA_AUDIO
-        } else {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+    val permission: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.READ_MEDIA_AUDIO
+    } else {
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    }
 
+    private fun checkPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     // Request permission
     private fun requestPermission() {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            android.Manifest.permission.READ_MEDIA_AUDIO
-        } else {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }
-
         if (!checkPermission()) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), PERMISSION_REQUEST_CODE)
         } else {
-            Toast.makeText(this, "Storage access granted!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Storage access granted!", Toast.LENGTH_SHORT).show()
             adapterSetup() // Load music when permission is already granted
         }
     }
