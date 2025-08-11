@@ -23,6 +23,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.albin.spotify.Views.Favourites
@@ -36,6 +37,9 @@ import com.albin.spotify.databinding.ActivityMainBinding
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -104,19 +108,19 @@ class MainActivity : AppCompatActivity() {
         mainBinding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_addprofile -> {
-                    Toast.makeText(applicationContext, "Add account", Toast.LENGTH_SHORT).show()
+                    ToastShower("Add account")
                 }
                 R.id.nav_whatsnew -> {
-                    Toast.makeText(applicationContext, "What's new clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("What's new clicked")
                 }
                 R.id.nav_recents -> {
-                    Toast.makeText(applicationContext, "Recents clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Recents clicked")
                 }
                 R.id.nav_updates -> {
-                    Toast.makeText(applicationContext, "Updates clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Updates clicked")
                 }
                 R.id.nav_settings -> {
-                    Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
+                    ToastShower("Settings clicked")
                 }
                 R.id.nav_exit -> {
                     finish() // Add actual exit functionality
@@ -178,8 +182,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun adapterSetup() {
 
-        musicList.clear()
-        musicList.addAll(readAllMusic())
+
+        lifecycleScope.launch {
+            var readedmusiclist = withContext(Dispatchers.IO){
+                readAllMusic()
+            }
+            musicList.clear()
+            musicList.addAll(readedmusiclist)
+        }
+
+
 
         val adapter = MusicAdapter(this, musicList)
         mainBinding.recyclerView.setItemViewCacheSize(10)
@@ -190,28 +202,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Check if permission is granted
-    private fun checkPermission(): Boolean {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            android.Manifest.permission.READ_MEDIA_AUDIO
-        } else {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+    val permission: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.READ_MEDIA_AUDIO
+    } else {
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    }
 
+    private fun checkPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     // Request permission
     private fun requestPermission() {
-        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            android.Manifest.permission.READ_MEDIA_AUDIO
-        } else {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        }
-
         if (!checkPermission()) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), PERMISSION_REQUEST_CODE)
         } else {
-            Toast.makeText(this, "Storage access granted!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Storage access granted!", Toast.LENGTH_SHORT).show()
             adapterSetup() // Load music when permission is already granted
         }
     }
@@ -322,5 +328,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             finishAffinity()
         }
+    }
+
+    fun ToastShower(dataToBeDisplayed:String){
+        Toast.makeText(applicationContext,dataToBeDisplayed, Toast.LENGTH_SHORT).show()
     }
 }
