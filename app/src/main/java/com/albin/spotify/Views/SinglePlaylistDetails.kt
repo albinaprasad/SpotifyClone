@@ -15,6 +15,7 @@ import com.albin.spotify.Playlist
 import com.albin.spotify.R
 import com.albin.spotify.SongSelectionAdapter
 import com.albin.spotify.Views.createPlaylist.Companion.musicPlaylitObj
+import com.albin.spotify.checkMusicExists
 import com.albin.spotify.databinding.ActivitySinglePlaylistDetailsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -51,6 +52,11 @@ class SinglePlaylistDetails : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivitySinglePlaylistDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //check the music data exits
+        createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist= checkMusicExists(
+            createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist)
+
 
         binding.recyclerViewP.setItemViewCacheSize(10)
         binding.recyclerViewP.layoutManager = LinearLayoutManager(this@SinglePlaylistDetails)
@@ -108,7 +114,6 @@ class SinglePlaylistDetails : AppCompatActivity() {
             binding.shuffleBtn.isVisible = true
         }
         adapter.notifyDataSetChanged()
-
 
     }
 

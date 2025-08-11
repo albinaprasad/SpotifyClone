@@ -52,6 +52,7 @@ class MoreOPtions : AppCompatActivity() {
         setImageAndTitle()
 
 
+
         bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when(newState)
@@ -87,7 +88,8 @@ class MoreOPtions : AppCompatActivity() {
             }
         }
 
-//favourite button
+        //favourite button
+
         moreOptionsBinding.favMO.setOnClickListener {
             var currentpos=intent.getIntExtra("position",0)
 
@@ -121,7 +123,7 @@ class MoreOPtions : AppCompatActivity() {
 
     private fun setImageAndTitle() {
 
-        songList= MainActivity.musicList
+        songList = MainActivity.musicList
 
 
         var position = intent.getIntExtra("position",0)

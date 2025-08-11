@@ -4,6 +4,7 @@ import com.albin.spotify.Views.Favourites
 import com.albin.spotify.Views.MoreOPtions
 import com.albin.spotify.Views.player
 import kotlinx.serialization.Serializable
+import java.io.File
 
 
 data class Music (val id: String,val title:String, val singer: String, val duration:Long=0,val path:String,val imageuri: String) {
@@ -37,4 +38,17 @@ fun favSongFind( Id:String): Int {
         }
     }
     return -1
+}
+
+fun checkMusicExists(musicData: ArrayList<Music>): ArrayList<Music>{
+
+    musicData.forEachIndexed{index,music->
+        var file=File(music.path)
+        if (file.exists() == false)
+        {
+            musicData.removeAt(index)
+        }
+    }
+
+    return musicData
 }

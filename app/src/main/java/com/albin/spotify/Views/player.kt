@@ -140,7 +140,6 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
                 player.musicservice!!.showNotification()
                 isPlaying=true
 
-
             }
 
         }
@@ -277,6 +276,11 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             Log.d("Time ","duration send"+PlayermusicList[position].duration.toString())
 
             startActivity(timerIntent)
+        }
+        //device button
+        playerBinding.devicebtn.setOnClickListener {
+            val btlaunchIntent=Intent(this@player, Bluethoothactivity::class.java)
+            startActivity(btlaunchIntent)
         }
     }
 

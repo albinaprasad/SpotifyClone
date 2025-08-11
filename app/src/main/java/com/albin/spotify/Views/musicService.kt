@@ -19,8 +19,12 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyCallback
+import android.telephony.TelephonyManager
 
 import android.util.Log
+import androidx.annotation.RequiresApi
 
 import androidx.core.app.NotificationCompat
 import androidx.palette.graphics.Palette
@@ -30,11 +34,12 @@ import com.albin.spotify.Views.player
 import com.albin.spotify.Views.player.Companion.musicservice
 import com.albin.spotify.Views.player.Companion.playerBinding
 import kotlinx.coroutines.Runnable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.invoke
 
 
 class musicService: Service() {
-
 
 companion object{
     val PREVIOUS="previous"
@@ -50,6 +55,9 @@ companion object{
 
     lateinit var runnable: Runnable
     lateinit  var mediasession: MediaSessionCompat
+     lateinit var telephonyManager: TelephonyManager
+    private var wasPlayingBeforeCall:Boolean = false
+    private var callCallback: CallStateCallback? = null
 
     val mybinder=Mybinder()
 
@@ -65,6 +73,25 @@ companion object{
         }
     }
 
+    //telephony manager setup
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun onCreate() {
+        super.onCreate()
+        telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+         callCallback = CallStateCallback(this)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
+            telephonyManager.registerTelephonyCallback(Executors.newSingleThreadExecutor(),callCallback!!)
+        }
+        else{
+            telephonyManager.listen(object:android.telephony.PhoneStateListener(){
+                override fun onCallStateChanged(state: Int, phoneNumber: String?) {
+                        handleCallState(state)
+                }
+            },PhoneStateListener.LISTEN_CALL_STATE)
+        }
+
+    }
 
     @SuppressLint("ForegroundServiceType")
     fun showNotification() {
@@ -140,6 +167,11 @@ companion object{
          catch (e: Exception) {
             Log.e("NotificationError", "Error building notification", e)
         }
+
+
+        //automatiaccly set up the playing facility during incoming calls
+
+
     }
 
     fun seekbarSetup(){
@@ -152,8 +184,46 @@ companion object{
         Handler(Looper.getMainLooper()).postDelayed(runnable,0)
 
 
+
+
     }
+    @RequiresApi(Build.VERSION_CODES.S)
+    class CallStateCallback(val service: musicService): TelephonyCallback(), TelephonyCallback.CallStateListener{
+        override fun onCallStateChanged(state: Int) {
+            service.handleCallState(state)
+        }
 
+    }
+    private fun handleCallState(state: kotlin.Int) {
 
+        when(state)
+        {
+            TelephonyManager.CALL_STATE_RINGING,TelephonyManager.CALL_STATE_OFFHOOK->{
 
+                if(player.isPlaying)
+                {
+                    wasPlayingBeforeCall=true
+                    player.isPlaying=false
+                    mediaPlayer?.pause()
+                    showNotification()
+
+                }
+            }
+            TelephonyManager.CALL_STATE_IDLE->{
+
+                if (wasPlayingBeforeCall)
+                {
+                    player.isPlaying=true
+                    wasPlayingBeforeCall=false
+                    mediaPlayer?.start()
+                    showNotification()
+                    seekbarSetup()
+
+                }
+            }
+        }
+
+    }
 }
+
+

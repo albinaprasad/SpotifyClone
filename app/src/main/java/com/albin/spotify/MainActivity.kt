@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity() {
 
 
         //load the playlists
-
         val sharedPref: SharedPreferences = getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
         val gson = Gson()
         val json = sharedPref.getString("playlistsKey", null)
@@ -294,6 +293,9 @@ class MainActivity : AppCompatActivity() {
             .create()
 
         val editor = getSharedPreferences("Favourite", MODE_PRIVATE).edit()
+
+        Favourites.FavMusicList=checkMusicExists(Favourites.FavMusicList)
+
         val jsonString = gson.toJson(Favourites.FavMusicList)
 
         Log.d("MoreOptions", "from main Saving FavMusicList: $jsonString")
@@ -318,7 +320,7 @@ class MainActivity : AppCompatActivity() {
         if (mainBinding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            finishAffinity()
         }
     }
 }
