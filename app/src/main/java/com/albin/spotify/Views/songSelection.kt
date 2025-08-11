@@ -18,25 +18,25 @@ class songSelection : AppCompatActivity() {
     lateinit var selectBinding: ActivitySongSelectionBinding
     lateinit var selectAdapter: SongSelectionAdapter
 
-    var AllSongsArray= ArrayList<Music>()
+    var AllSongsArray = ArrayList<Music>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        selectBinding= ActivitySongSelectionBinding.inflate(layoutInflater)
+        selectBinding = ActivitySongSelectionBinding.inflate(layoutInflater)
         setContentView(selectBinding.root)
 
         //adapter setUP
-        selectAdapter= SongSelectionAdapter(this@songSelection, MainActivity.musicList)
+        selectAdapter = SongSelectionAdapter(this@songSelection, MainActivity.musicList)
         selectBinding.recyclerViewS.setItemViewCacheSize(10)
-        selectBinding.recyclerViewS.layoutManager= LinearLayoutManager(this)
-        selectBinding.recyclerViewS.adapter=selectAdapter
+        selectBinding.recyclerViewS.layoutManager = LinearLayoutManager(this)
+        selectBinding.recyclerViewS.adapter = selectAdapter
 
         AllSongsArray.addAll(MainActivity.musicList)
 
         //searchview set up
 
-        selectBinding.searchViewS.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        selectBinding.searchViewS.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -44,20 +44,16 @@ class songSelection : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
 
                 MainActivity.musicList.clear()
-                if(newText.isNullOrEmpty())
-                {
+                if (newText.isNullOrEmpty()) {
                     MainActivity.musicList.addAll(AllSongsArray)
-                }
-                else{
-                    var query=newText.lowercase()
+                } else {
+                    var query = newText.lowercase()
 
-                    for(song in AllSongsArray)
-                    {
-                        var singername=song.singer.lowercase()
-                        var songname=song.title.lowercase()
+                    for (song in AllSongsArray) {
+                        var singername = song.singer.lowercase()
+                        var songname = song.title.lowercase()
 
-                        if (songname.contains(query) || singername.contains(query))
-                        {
+                        if (songname.contains(query) || singername.contains(query)) {
                             MainActivity.musicList.add(song)
                         }
                     }
@@ -65,14 +61,11 @@ class songSelection : AppCompatActivity() {
                 }
                 selectAdapter.notifyDataSetChanged()
 
-              return true
+                return true
             }
 
 
         })
-
-
-
 
 
     }

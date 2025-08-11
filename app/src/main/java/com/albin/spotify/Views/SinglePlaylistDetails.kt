@@ -41,7 +41,7 @@ class SinglePlaylistDetails : AppCompatActivity() {
             val type = object : TypeToken<ArrayList<Playlist>>() {}.type
             val loadedPlaylists: ArrayList<Playlist>? = gson.fromJson(json, type)
             if (loadedPlaylists != null) {
-                createPlaylist.musicPlaylitObj.ref=loadedPlaylists
+                createPlaylist.musicPlaylitObj.ref = loadedPlaylists
             }
         }
 
@@ -54,8 +54,9 @@ class SinglePlaylistDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         //check the music data exits
-        createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist= checkMusicExists(
-            createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist)
+        createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist = checkMusicExists(
+            createPlaylist.musicPlaylitObj.ref[curentplayListPos].playlist
+        )
 
 
         binding.recyclerViewP.setItemViewCacheSize(10)
@@ -123,7 +124,7 @@ class SinglePlaylistDetails : AppCompatActivity() {
         finish()
     }
 
-     fun funSavePlaylist() {
+    fun funSavePlaylist() {
         val sharedPref: SharedPreferences = this.getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
         val editor = sharedPref.edit()
         val gson = Gson()

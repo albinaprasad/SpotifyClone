@@ -16,13 +16,13 @@ import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class createPlaylist: AppCompatActivity() {
+class createPlaylist : AppCompatActivity() {
 
     lateinit var createBinding: PlaylistDialogBinding
 
-    companion object{
+    companion object {
 
-        var musicPlaylitObj= MusicPlaylit()
+        var musicPlaylitObj = MusicPlaylit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,35 +42,30 @@ class createPlaylist: AppCompatActivity() {
 
         createBinding.createBtn.setOnClickListener {
 
-            var isPlayListExists=false
+            var isPlayListExists = false
 
-            var playlistNameByuser=createBinding.playlistET.text.toString()
+            var playlistNameByuser = createBinding.playlistET.text.toString()
 
-            Log.d("name",playlistNameByuser)
+            Log.d("name", playlistNameByuser)
 
-            if (playlistNameByuser!= null && playlistNameByuser.isNotEmpty())
-            {
-                for (list in musicPlaylitObj.ref)
-                {
-                    if (playlistNameByuser == list.playlistname)
-                    {
-                        isPlayListExists=true
+            if (playlistNameByuser != null && playlistNameByuser.isNotEmpty()) {
+                for (list in musicPlaylitObj.ref) {
+                    if (playlistNameByuser == list.playlistname) {
+                        isPlayListExists = true
                         break
                     }
                 }
-                if (isPlayListExists)
-                {
-                    Toast.makeText(this,"playlist already exixts", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    var playlistObj= Playlist()
-                    playlistObj.playlistname=playlistNameByuser.toString()
-                    playlistObj.playlist= ArrayList()
+                if (isPlayListExists) {
+                    Toast.makeText(this, "playlist already exixts", Toast.LENGTH_SHORT).show()
+                } else {
+                    var playlistObj = Playlist()
+                    playlistObj.playlistname = playlistNameByuser.toString()
+                    playlistObj.playlist = ArrayList()
 
-                    var calendar=java.util.Calendar.getInstance()
-                    val sdf= SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
+                    var calendar = java.util.Calendar.getInstance()
+                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
 
-                    playlistObj.createdon=sdf.format(calendar.time)
+                    playlistObj.createdon = sdf.format(calendar.time)
                     musicPlaylitObj.ref.add(playlistObj)
 
                     funSavePlaylist()

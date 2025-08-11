@@ -27,30 +27,33 @@ import kotlin.text.clear
 class Bluethoothactivity : AppCompatActivity() {
 
 
-   lateinit var bluebinding: ActivityBluethoothactivityBinding
-   lateinit var bottomSheet: BottomSheetBehavior<View>
+    lateinit var bluebinding: ActivityBluethoothactivityBinding
+    lateinit var bottomSheet: BottomSheetBehavior<View>
 
-   var deviceName:String?=null
-    var deviceAddress:String?=null
-   val REQUEST_ENABLE_BT=100
-   var paired_DevicesList=ArrayList<BTPaired>()
+    var deviceName: String? = null
+    var deviceAddress: String? = null
+    val REQUEST_ENABLE_BT = 100
+    var paired_DevicesList = ArrayList<BTPaired>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        bluebinding= ActivityBluethoothactivityBinding.inflate(layoutInflater)
+        bluebinding = ActivityBluethoothactivityBinding.inflate(layoutInflater)
         setContentView(bluebinding.root)
 
-        val bluthoothManager: BluetoothManager=getSystemService(BluetoothManager::class.java)
-        val bluetoothAdapter:BluetoothAdapter?=bluthoothManager.getAdapter()
+        val bluthoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
+        val bluetoothAdapter: BluetoothAdapter? = bluthoothManager.getAdapter()
         if (bluetoothAdapter == null) {
-            Toast.makeText(this@Bluethoothactivity,"Device dont support bluetooth",Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@Bluethoothactivity,
+                "Device dont support bluetooth",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
-        if (bluetoothAdapter!!.isEnabled==false)
-        {
-            val bIntent=Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(bIntent,REQUEST_ENABLE_BT)
+        if (bluetoothAdapter!!.isEnabled == false) {
+            val bIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(bIntent, REQUEST_ENABLE_BT)
         }
 
         bluebinding.searchBt.setOnClickListener {
@@ -63,25 +66,24 @@ class Bluethoothactivity : AppCompatActivity() {
             }
 
 
-
         }
 
-        val adapter= BTAdapter(this,paired_DevicesList)
-        bluebinding.recyclerView.layoutManager= LinearLayoutManager(this)
-        bluebinding.recyclerView.adapter=adapter
+        val adapter = BTAdapter(this, paired_DevicesList)
+        bluebinding.recyclerView.layoutManager = LinearLayoutManager(this)
+        bluebinding.recyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
 
         //bottom shett
-        val screenheight=resources.displayMetrics.heightPixels
-        val halfScreenHeight =(screenheight * 0.70).toInt()
+        val screenheight = resources.displayMetrics.heightPixels
+        val halfScreenHeight = (screenheight * 0.70).toInt()
 
-        bottomSheet= BottomSheetBehavior.from(bluebinding.Linearmain)
-        bottomSheet.state= BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheet.isHideable=true
-        bottomSheet.isDraggable=true
-        bottomSheet.peekHeight=halfScreenHeight
+        bottomSheet = BottomSheetBehavior.from(bluebinding.Linearmain)
+        bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheet.isHideable = true
+        bottomSheet.isDraggable = true
+        bottomSheet.peekHeight = halfScreenHeight
 
-        bottomSheet.addBottomSheetCallback(object:BottomSheetBehavior.BottomSheetCallback(){
+        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -101,15 +103,18 @@ class Bluethoothactivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode==REQUEST_ENABLE_BT && resultCode==RESULT_OK)
-        {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
             return
-        }
-        else{
-            Toast.makeText(this@Bluethoothactivity,"Device dont support bluetooth",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                this@Bluethoothactivity,
+                "Device dont support bluetooth",
+                Toast.LENGTH_SHORT
+            ).show()
 
         }
     }
+
     private fun loadPairedDevices(bluetoothAdapter: BluetoothAdapter) {
         val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter.bondedDevices
         paired_DevicesList.clear()
@@ -120,12 +125,22 @@ class Bluethoothactivity : AppCompatActivity() {
         }
         bluebinding.recyclerView.adapter?.notifyDataSetChanged()
     }
+
     private fun checkBluetoothPermissions(): Boolean {
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) == PackageManager.PERMISSION_GRANTED
         } else {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.BLUETOOTH_ADMIN
+                    ) == PackageManager.PERMISSION_GRANTED
         }
     }
 

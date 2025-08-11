@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 100
 
-    companion object{
+    companion object {
         val musicList = ArrayList<Music>()
     }
 
@@ -66,12 +66,12 @@ class MainActivity : AppCompatActivity() {
 
         Favourites.FavMusicList = ArrayList()
         var editor: SharedPreferences = getSharedPreferences("Favourite", MODE_PRIVATE)
-        var typeToken= object:TypeToken<ArrayList<Music>>(){}.type
-        val jsonString= editor.getString("Fav_songs",null)
+        var typeToken = object : TypeToken<ArrayList<Music>>() {}.type
+        val jsonString = editor.getString("Fav_songs", null)
 
-        if(jsonString!= null)
-        {
-            val data: ArrayList<Music> = GsonBuilder().setLenient().create().fromJson(jsonString,typeToken)
+        if (jsonString != null) {
+            val data: ArrayList<Music> =
+                GsonBuilder().setLenient().create().fromJson(jsonString, typeToken)
             Favourites.FavMusicList.addAll(data)
         }
 
@@ -85,17 +85,15 @@ class MainActivity : AppCompatActivity() {
             val type = object : TypeToken<ArrayList<Playlist>>() {}.type
             val loadedPlaylists: ArrayList<Playlist>? = gson.fromJson(json, type)
             if (loadedPlaylists != null) {
-                createPlaylist.musicPlaylitObj.ref=loadedPlaylists
+                createPlaylist.musicPlaylitObj.ref = loadedPlaylists
             }
         }
-
-
 
 
 //playlits adding
 
         mainBinding.PlayListBtn.setOnClickListener {
-            val playListintent= Intent(this@MainActivity, Playlists::class.java)
+            val playListintent = Intent(this@MainActivity, Playlists::class.java)
             startActivity(playListintent)
         }
 
@@ -110,18 +108,23 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_addprofile -> {
                     ToastShower("Add account")
                 }
+
                 R.id.nav_whatsnew -> {
                     ToastShower("What's new clicked")
                 }
+
                 R.id.nav_recents -> {
                     ToastShower("Recents clicked")
                 }
+
                 R.id.nav_updates -> {
                     ToastShower("Updates clicked")
                 }
+
                 R.id.nav_settings -> {
                     ToastShower("Settings clicked")
                 }
+
                 R.id.nav_exit -> {
                     finish() // Add actual exit functionality
                 }
@@ -136,10 +139,9 @@ class MainActivity : AppCompatActivity() {
 
         mainBinding.shuffleBtn.setOnClickListener {
             musicList.shuffle()
-          mainBinding.recyclerView.adapter?.notifyDataSetChanged()
-            Toast.makeText(this,"Library shuffled", Toast.LENGTH_SHORT).show()
+            mainBinding.recyclerView.adapter?.notifyDataSetChanged()
+            Toast.makeText(this, "Library shuffled", Toast.LENGTH_SHORT).show()
         }
-
 
 
         // Only setup adapter if permission is already granted
@@ -151,46 +153,45 @@ class MainActivity : AppCompatActivity() {
         //fav button features
         mainBinding.favBtn.setOnClickListener {
 
-            val favIntent= Intent(this, Favourites::class.java)
+            val favIntent = Intent(this, Favourites::class.java)
             startActivity(favIntent)
         }
 
     }
 
-     fun navbarAnimationSetUp() {
+    fun navbarAnimationSetUp() {
 
-         mainBinding.drawerlayout.addDrawerListener(object: DrawerLayout.DrawerListener{
-             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+        mainBinding.drawerlayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
 
-                 var moveDistance=drawerView.width*slideOffset
-                 mainBinding.main.translationX=moveDistance
-             }
+                var moveDistance = drawerView.width * slideOffset
+                mainBinding.main.translationX = moveDistance
+            }
 
-             override fun onDrawerOpened(drawerView: View) {
+            override fun onDrawerOpened(drawerView: View) {
 
-             }
+            }
 
-             override fun onDrawerClosed(drawerView: View) {
+            override fun onDrawerClosed(drawerView: View) {
 
-             }
+            }
 
-             override fun onDrawerStateChanged(newState: Int) {
+            override fun onDrawerStateChanged(newState: Int) {
 
-             }
-         })
+            }
+        })
     }
 
     private fun adapterSetup() {
 
 
         lifecycleScope.launch {
-            var readedmusiclist = withContext(Dispatchers.IO){
+            var readedmusiclist = withContext(Dispatchers.IO) {
                 readAllMusic()
             }
             musicList.clear()
             musicList.addAll(readedmusiclist)
         }
-
 
 
         val adapter = MusicAdapter(this, musicList)
@@ -209,7 +210,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermission(): Boolean {
-        return ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     // Request permission
@@ -272,18 +276,19 @@ class MainActivity : AppCompatActivity() {
         cursor?.use {
             while (it.moveToNext()) {
 
-                    val id = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
-                    val title = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
-                    val artist = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
-                    val duration = it.getLong(it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION))
-                    val path = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
-                    val albumId=it.getLong(it.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
+                val id = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
+                val title = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
+                val artist = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
+                val duration = it.getLong(it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION))
+                val path = it.getString(it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
+                val albumId =
+                    it.getLong(it.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
 
-                    val uri=Uri.parse("content://media/external/audio/albumart")
-                    val arturi=Uri.withAppendedPath(uri,albumId).toString()
+                val uri = Uri.parse("content://media/external/audio/albumart")
+                val arturi = Uri.withAppendedPath(uri, albumId).toString()
 
-                    val music = Music(id, title, artist, duration, path,arturi)
-                    tempMusicList.add(music)
+                val music = Music(id, title, artist, duration, path, arturi)
+                tempMusicList.add(music)
 
 
             }
@@ -300,7 +305,7 @@ class MainActivity : AppCompatActivity() {
 
         val editor = getSharedPreferences("Favourite", MODE_PRIVATE).edit()
 
-        Favourites.FavMusicList=checkMusicExists(Favourites.FavMusicList)
+        Favourites.FavMusicList = checkMusicExists(Favourites.FavMusicList)
 
         val jsonString = gson.toJson(Favourites.FavMusicList)
 
@@ -313,15 +318,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        if(player.isPlaying == false && player.musicservice != null)
-        {
-        player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
+        if (player.isPlaying == false && player.musicservice != null) {
+            player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
             player.musicservice!!.mediaPlayer!!.release()
-            player.musicservice=null
+            player.musicservice = null
             exitProcess(1)
         }
 
     }
+
     override fun onBackPressed() {
         if (mainBinding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
             mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
@@ -330,7 +335,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun ToastShower(dataToBeDisplayed:String){
-        Toast.makeText(applicationContext,dataToBeDisplayed, Toast.LENGTH_SHORT).show()
+    fun ToastShower(dataToBeDisplayed: String) {
+        Toast.makeText(applicationContext, dataToBeDisplayed, Toast.LENGTH_SHORT).show()
     }
 }

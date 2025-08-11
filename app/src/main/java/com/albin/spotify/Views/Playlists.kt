@@ -20,7 +20,8 @@ import com.albin.spotify.databinding.ActivityPlaylistsBinding
 class Playlists : AppCompatActivity() {
 
     lateinit var playBinding: ActivityPlaylistsBinding
-    companion object{
+
+    companion object {
         lateinit var playlistadapter: PlayListAdapter
     }
 
@@ -30,7 +31,7 @@ class Playlists : AppCompatActivity() {
 
 
 
-        playBinding= ActivityPlaylistsBinding.inflate(layoutInflater)
+        playBinding = ActivityPlaylistsBinding.inflate(layoutInflater)
         setContentView(playBinding.root)
 
 
@@ -43,18 +44,25 @@ class Playlists : AppCompatActivity() {
                 R.id.nav_addprofile -> {
                     Toast.makeText(applicationContext, "Add account", Toast.LENGTH_SHORT).show()
                 }
+
                 R.id.nav_whatsnew -> {
-                    Toast.makeText(applicationContext, "What's new clicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "What's new clicked", Toast.LENGTH_SHORT)
+                        .show()
                 }
+
                 R.id.nav_recents -> {
                     Toast.makeText(applicationContext, "Recents clicked", Toast.LENGTH_SHORT).show()
                 }
+
                 R.id.nav_updates -> {
                     Toast.makeText(applicationContext, "Updates clicked", Toast.LENGTH_SHORT).show()
                 }
+
                 R.id.nav_settings -> {
-                    Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Settings clicked", Toast.LENGTH_SHORT)
+                        .show()
                 }
+
                 R.id.nav_exit -> {
                     finish() // Add actual exit functionality
                 }
@@ -63,11 +71,11 @@ class Playlists : AppCompatActivity() {
             true
         }
         //animation set up for nav bar
-        playBinding.drawerlayout.addDrawerListener(object: DrawerLayout.DrawerListener{
+        playBinding.drawerlayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
 
-                var movedistance = drawerView.width*slideOffset
-                playBinding.main.translationX=movedistance
+                var movedistance = drawerView.width * slideOffset
+                playBinding.main.translationX = movedistance
             }
 
             override fun onDrawerOpened(drawerView: View) {
@@ -86,28 +94,28 @@ class Playlists : AppCompatActivity() {
 
         //adapter setup
 
-        playBinding.playListRV.layoutManager = GridLayoutManager(this@Playlists,2)
-         playlistadapter = PlayListAdapter(this, createPlaylist.musicPlaylitObj.ref)
+        playBinding.playListRV.layoutManager = GridLayoutManager(this@Playlists, 2)
+        playlistadapter = PlayListAdapter(this, createPlaylist.musicPlaylitObj.ref)
         playBinding.playListRV.adapter = playlistadapter
 
 
         //create new playlists
 
         playBinding.addPlaylist.setOnClickListener {
-            val addplayListintent= Intent(this@Playlists, createPlaylist::class.java)
+            val addplayListintent = Intent(this@Playlists, createPlaylist::class.java)
             startActivity(addplayListintent)
         }
 
     }
 
-    override fun onBackPressed()
-    {
+    override fun onBackPressed() {
         if (playBinding.drawerlayout.isDrawerOpen(GravityCompat.START)) {
             playBinding.drawerlayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
     }
+
     override fun onResume() {
         super.onResume()
         playlistadapter.refreshPlaylistData()

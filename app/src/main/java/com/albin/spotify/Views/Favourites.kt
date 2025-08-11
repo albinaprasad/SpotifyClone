@@ -23,9 +23,9 @@ class Favourites : AppCompatActivity() {
     lateinit var favBinding: ActivityFavouritesBinding
     lateinit var adapter: FavouriteAdapter
 
-    companion object{
+    companion object {
         var FavMusicList: ArrayList<Music> = ArrayList()
-        var isGrid:Boolean = true
+        var isGrid: Boolean = true
 
     }
 
@@ -33,32 +33,28 @@ class Favourites : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        favBinding= ActivityFavouritesBinding.inflate(layoutInflater)
+        favBinding = ActivityFavouritesBinding.inflate(layoutInflater)
         setContentView(favBinding.root)
 
-        favBinding.recyclerViewF.layoutManager= GridLayoutManager(this@Favourites,4)
+        favBinding.recyclerViewF.layoutManager = GridLayoutManager(this@Favourites, 4)
 
-        adapter = FavouriteAdapter(this@Favourites,FavMusicList)
+        adapter = FavouriteAdapter(this@Favourites, FavMusicList)
 
-        favBinding.recyclerViewF.adapter=adapter
-
-
+        favBinding.recyclerViewF.adapter = adapter
 
 
         //grid and list layout setup
 
         favBinding.layoutChangeBtn.setOnClickListener {
 
-            if (isGrid)
-            {
-                isGrid=false
+            if (isGrid) {
+                isGrid = false
                 favBinding.recyclerViewF.layoutManager = LinearLayoutManager(this)
                 favBinding.layoutChangeBtn.setImageResource(R.drawable.list_view)
 
-            }
-            else{
-                isGrid=true
-                favBinding.recyclerViewF.layoutManager= GridLayoutManager(this@Favourites,4)
+            } else {
+                isGrid = true
+                favBinding.recyclerViewF.layoutManager = GridLayoutManager(this@Favourites, 4)
                 favBinding.layoutChangeBtn.setImageResource(R.drawable.grid_view)
             }
 
@@ -69,7 +65,7 @@ class Favourites : AppCompatActivity() {
             FavMusicList.shuffle()
             favBinding.recyclerViewF.adapter?.notifyDataSetChanged()
 
-            Toast.makeText(applicationContext,"Favourites shuffled ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Favourites shuffled ", Toast.LENGTH_SHORT).show()
         }
 
     }

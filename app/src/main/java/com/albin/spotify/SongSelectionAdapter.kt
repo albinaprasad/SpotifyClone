@@ -21,13 +21,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 
-class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>): RecyclerView.Adapter<SongSelectionAdapter.selecioViewHolder>() {
+class SongSelectionAdapter(var context: Context, var musicList: ArrayList<Music>) :
+    RecyclerView.Adapter<SongSelectionAdapter.selecioViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): selecioViewHolder {
-        val view= SongDetailsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return selecioViewHolder( view)
+        val view = SongDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return selecioViewHolder(view)
     }
 
     override fun onBindViewHolder(
@@ -35,30 +36,32 @@ class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>)
         position: Int
     ) {
 
-            holder.Sbinding.songName.text = musicList[position].title // Set song title
-            holder.Sbinding.songDetails.text =  musicList[position].singer // Placeholder
-            holder.Sbinding.duration.text = musicList[position].formatDuration(musicList[position].duration)
+        holder.Sbinding.songName.text = musicList[position].title // Set song title
+        holder.Sbinding.songDetails.text = musicList[position].singer // Placeholder
+        holder.Sbinding.duration.text =
+            musicList[position].formatDuration(musicList[position].duration)
 
-            Glide.with(context).load(musicList[position]
-                .imageuri).apply(RequestOptions()
-                .placeholder(R.drawable.musical_icon))
-                .circleCrop()
-                .into(holder.Sbinding.albumArt)
+        Glide.with(context).load(
+            musicList[position]
+                .imageuri
+        ).apply(
+            RequestOptions()
+                .placeholder(R.drawable.musical_icon)
+        )
+            .circleCrop()
+            .into(holder.Sbinding.albumArt)
 
-            //click on the cardview to make the music-player activity
-            holder.Sbinding.card.setOnClickListener {
+        //click on the cardview to make the music-player activity
+        holder.Sbinding.card.setOnClickListener {
 
-                    if(addSong(musicList[position]))
-                    {
-                        holder.Sbinding.mainLL.setBackgroundColor(Color.parseColor("#00FF00"));
-                    }
-                else
-                    {
-                        holder.Sbinding.mainLL.setBackgroundColor(Color.parseColor("#121212"))
-                    }
-                funSavePlaylist()
-                Toast.makeText(context,"Selection adaptyer clicked", Toast.LENGTH_SHORT).show()
+            if (addSong(musicList[position])) {
+                holder.Sbinding.mainLL.setBackgroundColor(Color.parseColor("#00FF00"));
+            } else {
+                holder.Sbinding.mainLL.setBackgroundColor(Color.parseColor("#121212"))
             }
+            funSavePlaylist()
+            Toast.makeText(context, "Selection adaptyer clicked", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -66,23 +69,28 @@ class SongSelectionAdapter(var context: Context,var musicList: ArrayList<Music>)
     }
 
 
-    class selecioViewHolder(var Sbinding: SongDetailsBinding): RecyclerView.ViewHolder(Sbinding.root){
+    class selecioViewHolder(var Sbinding: SongDetailsBinding) :
+        RecyclerView.ViewHolder(Sbinding.root) {
     }
 
-    fun addSong(Song:Music): Boolean{
+    fun addSong(Song: Music): Boolean {
 
-        createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.forEachIndexed { index,music->
+        createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.forEachIndexed { index, music ->
 
-            if(Song.id == music.id)
-            {
-                createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.removeAt(index)
+            if (Song.id == music.id) {
+                createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.removeAt(
+                    index
+                )
 
                 return false
             }
         }
-        createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.add(Song)
+        createPlaylist.musicPlaylitObj.ref[SinglePlaylistDetails.curentplayListPos].playlist.add(
+            Song
+        )
         return true
     }
+
     fun funSavePlaylist() {
         val sharedPref: SharedPreferences = context.getSharedPreferences("PLAYLISTS", MODE_PRIVATE)
         val editor = sharedPref.edit()

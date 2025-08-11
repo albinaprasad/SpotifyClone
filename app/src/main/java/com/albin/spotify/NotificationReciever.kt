@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlin.system.exitProcess
 
-class NotificationReciever: BroadcastReceiver() {
+class NotificationReciever : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
         when (intent?.action) {
@@ -32,43 +32,39 @@ class NotificationReciever: BroadcastReceiver() {
     }
 
 
-
-    fun setupMusicService()
-    {
-        var player1=player()
-        player.musicservice!!. mediaPlayer?.let {
+    fun setupMusicService() {
+        var player1 = player()
+        player.musicservice!!.mediaPlayer?.let {
             it.stop()
             it.reset()
             it.release()
         }
-        player.musicservice!!. mediaPlayer = null
+        player.musicservice!!.mediaPlayer = null
 
-        player.musicservice!!.mediaPlayer= MediaPlayer()
-        player.musicservice!!. mediaPlayer!!.reset()
+        player.musicservice!!.mediaPlayer = MediaPlayer()
+        player.musicservice!!.mediaPlayer!!.reset()
         player.musicservice!!.mediaPlayer!!.setDataSource(PlayermusicList[position].path)
         player.musicservice!!.mediaPlayer!!.prepare()
         player.musicservice!!.mediaPlayer!!.start()
 
         player.musicservice!!.showNotification()
-        isPlaying=true
-        playerBinding.currentTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+        isPlaying = true
+        playerBinding.currentTimeTextView.text =
+            player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
 
-        playerBinding.totalTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
+        playerBinding.totalTimeTextView.text =
+            player1.formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
 
-        playerBinding.musicSeekBar.progress=0
-        playerBinding.musicSeekBar.max=musicservice!!.mediaPlayer!!.duration
+        playerBinding.musicSeekBar.progress = 0
+        playerBinding.musicSeekBar.max = musicservice!!.mediaPlayer!!.duration
     }
 
 
+    private fun playNext(context: Context?) {
 
-    private fun playNext(context:Context?) {
-
-        if (player.position ==player.PlayermusicList.size-1 )
-        {
-            player.position=0
-        }
-        else
-        {
+        if (player.position == player.PlayermusicList.size - 1) {
+            player.position = 0
+        } else {
             player.position++
         }
 
@@ -82,21 +78,17 @@ class NotificationReciever: BroadcastReceiver() {
         context!!.startActivity(updateIntent)
     }
 
-    fun PlayPrevious(context: Context?)
-    {
-        if (position == 0 )
-        {
-            position=PlayermusicList.size-1
+    fun PlayPrevious(context: Context?) {
+        if (position == 0) {
+            position = PlayermusicList.size - 1
 
-        }
-        else
-        {
+        } else {
             position--
         }
 
         setupMusicService()
 
-        val prevUiIntent= Intent(context,player::class.java).apply {
+        val prevUiIntent = Intent(context, player::class.java).apply {
 
             action = "previous_ui_update"
             putExtra("previous", position)
@@ -108,27 +100,26 @@ class NotificationReciever: BroadcastReceiver() {
 
     private fun playAndPause() {
 
-       if (player.isPlaying)
-       {
-           player.musicservice!!.mediaPlayer!!.pause()
-           player.musicservice!!.showNotification()
-            player.isPlaying=false
-          playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
-           Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.playandpause)
+        if (player.isPlaying) {
+            player.musicservice!!.mediaPlayer!!.pause()
+            player.musicservice!!.showNotification()
+            player.isPlaying = false
+            playerBinding.Pausebtn.setIconResource(R.drawable.playandpause)
+            Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.playandpause)
 
 
-       }else {
-          player.musicservice!!.mediaPlayer!!.start()
-           player.musicservice!!.showNotification()
-           player.isPlaying = true
-           playerBinding.Pausebtn.setIconResource(R.drawable.pause)
-           Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.miniplayer_pause)
-       }
+        } else {
+            player.musicservice!!.mediaPlayer!!.start()
+            player.musicservice!!.showNotification()
+            player.isPlaying = true
+            playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+            Nowplaying._binding!!.miniPlayerPlayPause.setImageResource(R.drawable.miniplayer_pause)
+        }
     }
 
     private fun stopAPP() {
-       player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
-        player.musicservice=null
+        player.musicservice!!.stopForeground(STOP_FOREGROUND_REMOVE)
+        player.musicservice = null
         exitProcess(1)
     }
 

@@ -33,10 +33,10 @@ import com.bumptech.glide.request.transition.Transition
 
 class Nowplaying : Fragment() {
 
-    var startX=0f
+    var startX = 0f
 
-    companion object{
-         var _binding: FragmentNowplayingBinding? = null
+    companion object {
+        var _binding: FragmentNowplayingBinding? = null
     }
 
     private val binding get() = _binding!!
@@ -62,45 +62,44 @@ class Nowplaying : Fragment() {
 
         //swipe gester for music change
 
-     binding.root.setOnTouchListener {view,event->
+        binding.root.setOnTouchListener { view, event ->
 
-         when(event.action)
-         {
-             MotionEvent.ACTION_DOWN -> {
-                 startX = event.x
-                 true
-             }
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    startX = event.x
+                    true
+                }
 
-             MotionEvent.ACTION_UP->{
+                MotionEvent.ACTION_UP -> {
 
-                 var endX=event.x
+                    var endX = event.x
 
-                 val differenceX=startX-endX
+                    val differenceX = startX - endX
 
-                 val minSwipeDistance = 100f
+                    val minSwipeDistance = 100f
 
-                 if (kotlin.math.abs(differenceX) > minSwipeDistance) {
+                    if (kotlin.math.abs(differenceX) > minSwipeDistance) {
 
-                     if (differenceX > 0) {
+                        if (differenceX > 0) {
 
-                         playNextSong()
-                     } else {
+                            playNextSong()
+                        } else {
 
-                         playPreviousSong()
-                     }
-                 }
-                 true
-             }
+                            playPreviousSong()
+                        }
+                    }
+                    true
+                }
 
-             else -> false
+                else -> false
 
-             }
-         }
+            }
+        }
 
         //devices button
         binding.miniPlayerDevices.setOnClickListener {
 
-            val btlaunchIntent=Intent(requireActivity(), Bluethoothactivity::class.java)
+            val btlaunchIntent = Intent(requireActivity(), Bluethoothactivity::class.java)
             startActivity(btlaunchIntent)
         }
 
@@ -108,7 +107,6 @@ class Nowplaying : Fragment() {
 
         return binding.root
     }
-
 
 
     override fun onResume() {
@@ -120,11 +118,10 @@ class Nowplaying : Fragment() {
     private fun setNowplayingLayout() {
 
 
-
-
         if (player.musicservice?.mediaPlayer != null &&
             PlayermusicList.isNotEmpty() &&
-            position < PlayermusicList.size) {
+            position < PlayermusicList.size
+        ) {
 
             binding.root.visibility = View.VISIBLE
 
@@ -146,15 +143,15 @@ class Nowplaying : Fragment() {
             // Update play/pause button based on current state
             updatePlayPauseButton()
 
-            musicservice!!. mediaPlayer?.let {
+            musicservice!!.mediaPlayer?.let {
                 it.stop()
                 it.reset()
                 it.release()
             }
-            musicservice!!. mediaPlayer = null
+            musicservice!!.mediaPlayer = null
 
-            musicservice!!.mediaPlayer= MediaPlayer()
-            musicservice!!. mediaPlayer!!.reset()
+            musicservice!!.mediaPlayer = MediaPlayer()
+            musicservice!!.mediaPlayer!!.reset()
             musicservice!!.mediaPlayer!!.setDataSource(PlayermusicList[position].path)
             musicservice!!.mediaPlayer!!.prepare()
             musicservice!!.mediaPlayer!!.start()
@@ -177,7 +174,7 @@ class Nowplaying : Fragment() {
         }
     }
 
-    private fun playMusic(){
+    private fun playMusic() {
         try {
             binding.miniPlayerPlayPause.setImageResource(R.drawable.pause)
 
@@ -205,10 +202,9 @@ class Nowplaying : Fragment() {
     }
 
 
-    fun playNextSong()
-    {
-       // Toast.makeText(requireActivity(),"next", Toast.LENGTH_SHORT).show()
-        if(isRepeat== false) {
+    fun playNextSong() {
+        // Toast.makeText(requireActivity(),"next", Toast.LENGTH_SHORT).show()
+        if (isRepeat == false) {
 
             if (position == PlayermusicList.size - 1) {
                 position = 0
@@ -220,40 +216,37 @@ class Nowplaying : Fragment() {
         }
 
     }
+
     private fun playPreviousSong() {
-       /// Toast.makeText(requireActivity(),"previosu", Toast.LENGTH_SHORT).show()
+        /// Toast.makeText(requireActivity(),"previosu", Toast.LENGTH_SHORT).show()
 
-        if (position == 0 )
-        {
-            position=PlayermusicList.size-1
+        if (position == 0) {
+            position = PlayermusicList.size - 1
 
-        }
-        else
-        {
+        } else {
             position--
         }
         setNowplayingLayout()
         player.musicservice!!.showNotification()
     }
 
-   fun  setdynamicBackgroundColor()
-    {
-        var dynamic_imageUri=PlayermusicList[position].imageuri.toString()
+    fun setdynamicBackgroundColor() {
+        var dynamic_imageUri = PlayermusicList[position].imageuri.toString()
 
         Glide.with(this)
             .asBitmap()
             .load(dynamic_imageUri)
-            .into(object:CustomTarget<Bitmap>(){
+            .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
                     resource: Bitmap,
                     transition: Transition<in Bitmap>?
                 ) {
 
-                    Palette.from(resource).generate{ palette->
-                    palette?.let{
+                    Palette.from(resource).generate { palette ->
+                        palette?.let {
 
-                        val dominantColor=it.getDominantColor(Color.parseColor("#2C2C2C"))
-                        applyBackgroundColor(dominantColor)
+                            val dominantColor = it.getDominantColor(Color.parseColor("#2C2C2C"))
+                            applyBackgroundColor(dominantColor)
                         }
                     }
                 }
@@ -264,9 +257,10 @@ class Nowplaying : Fragment() {
                 }
             })
     }
+
     private fun applyBackgroundColor(dominantColor: Int) {
 
-        val radius=18f
+        val radius = 18f
         val roundedBackground = GradientDrawable()
         roundedBackground.shape = GradientDrawable.RECTANGLE
         roundedBackground.cornerRadius = radius
@@ -280,7 +274,7 @@ class Nowplaying : Fragment() {
         //binding.root.setBackgroundColor(finalBackground)
 
         roundedBackground.setColor(finalBackground)
-        binding.root.background=roundedBackground
+        binding.root.background = roundedBackground
     }
 
 }

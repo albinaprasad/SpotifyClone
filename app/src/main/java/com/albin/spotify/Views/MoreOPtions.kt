@@ -28,22 +28,22 @@ import com.google.gson.GsonBuilder
 
 class MoreOPtions : AppCompatActivity() {
 
-    companion object{
-        var isFav: Boolean=false
-        var favIndex=-1
-        var songList= ArrayList<Music>()
+    companion object {
+        var isFav: Boolean = false
+        var favIndex = -1
+        var songList = ArrayList<Music>()
     }
 
     lateinit var moreOptionsBinding: ActivityMoreOptionsBinding
     lateinit var bottomSheet: BottomSheetBehavior<View>
 
-    val REQUESTCODE=8
+    val REQUESTCODE = 8
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        moreOptionsBinding= ActivityMoreOptionsBinding.inflate(layoutInflater)
+        moreOptionsBinding = ActivityMoreOptionsBinding.inflate(layoutInflater)
         setContentView(moreOptionsBinding.root)
 
 
@@ -53,11 +53,10 @@ class MoreOPtions : AppCompatActivity() {
 
 
 
-        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+        bottomSheet.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState)
-                {
-                    BottomSheetBehavior.STATE_HIDDEN->{
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
                         finish()
                     }
                 }
@@ -70,49 +69,46 @@ class MoreOPtions : AppCompatActivity() {
         })
 
 
-
-
         //equaliser
         moreOptionsBinding.EqualiserMO.setOnClickListener {
 
             try {
-                val EqIntent= Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
-                EqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, player.musicservice!!.mediaPlayer!!.audioSessionId)
-                EqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME,baseContext.packageName)
+                val EqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
+                EqIntent.putExtra(
+                    AudioEffect.EXTRA_AUDIO_SESSION,
+                    player.musicservice!!.mediaPlayer!!.audioSessionId
+                )
+                EqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
                 EqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
-                startActivityForResult(EqIntent,REQUESTCODE)
-            }
-            catch (e: Exception){
-                Toast.makeText(this,"Equaliser error", Toast.LENGTH_SHORT).show()
-                Log.d("Equaliser","Error in Equiliser")
+                startActivityForResult(EqIntent, REQUESTCODE)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Equaliser error", Toast.LENGTH_SHORT).show()
+                Log.d("Equaliser", "Error in Equiliser")
             }
         }
 
         //favourite button
 
         moreOptionsBinding.favMO.setOnClickListener {
-            var currentpos=intent.getIntExtra("position",0)
+            var currentpos = intent.getIntExtra("position", 0)
 
-            if( isFav )
-            {
-                isFav=false
+            if (isFav) {
+                isFav = false
                 moreOptionsBinding.favMO.setIconResource(R.drawable.favourite)
 
-                var FavPos=favSongFind(songList[currentpos].id)
+                var FavPos = favSongFind(songList[currentpos].id)
 
-                Log.d("fav",FavPos.toString())
+                Log.d("fav", FavPos.toString())
 
-                if(FavPos != -1)
-                {
+                if (FavPos != -1) {
                     Favourites.FavMusicList.removeAt(FavPos)
                     //saveFavorites()
                 }
-            }
-            else{
-                isFav=true
+            } else {
+                isFav = true
                 moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
                 Favourites.FavMusicList.add(songList[currentpos])
-                Log.d("fav", "music list size"+ Favourites.FavMusicList.toString())
+                Log.d("fav", "music list size" + Favourites.FavMusicList.toString())
                 //saveFavorites()
             }
 
@@ -126,29 +122,27 @@ class MoreOPtions : AppCompatActivity() {
         songList = MainActivity.musicList
 
 
-        var position = intent.getIntExtra("position",0)
-        var artist:String = songList[position].singer
-        var songName: String=songList[position].title
+        var position = intent.getIntExtra("position", 0)
+        var artist: String = songList[position].singer
+        var songName: String = songList[position].title
 
-        Glide.with(this).load(songList[position].imageuri).apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
+        Glide.with(this).load(songList[position].imageuri)
+            .apply(RequestOptions.placeholderOf(R.drawable.musical_icon))
             .centerCrop().into(moreOptionsBinding.albumArtMO)
 
-        moreOptionsBinding.albumNameMO.text=songName
+        moreOptionsBinding.albumNameMO.text = songName
         moreOptionsBinding.albumNameMO.setSelected(true)
-        moreOptionsBinding.artitNameMO.text=artist
+        moreOptionsBinding.artitNameMO.text = artist
         moreOptionsBinding.artitNameMO.setSelected(true)
 
-        favIndex=favSongFind(songList[position].id)
+        favIndex = favSongFind(songList[position].id)
 
-        if( favIndex == -1 )
-        {
-            isFav=false
+        if (favIndex == -1) {
+            isFav = false
             moreOptionsBinding.favMO.setIconResource(R.drawable.favourite)
 
-        }
-        else
-        {
-            isFav=true
+        } else {
+            isFav = true
             moreOptionsBinding.favMO.setIconResource(R.drawable.full_love)
 
         }
@@ -159,15 +153,14 @@ class MoreOPtions : AppCompatActivity() {
     private fun setupBottomSheet() {
 
         val screenHeight = resources.displayMetrics.heightPixels
-        val halfScreenHeight =(screenHeight * 0.70).toInt()
+        val halfScreenHeight = (screenHeight * 0.70).toInt()
 
         bottomSheet = BottomSheetBehavior.from(moreOptionsBinding.main)
         bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheet.isDraggable=true
+        bottomSheet.isDraggable = true
         bottomSheet.peekHeight = halfScreenHeight
-        bottomSheet.isHideable=true
+        bottomSheet.isHideable = true
     }
-
 
 
     override fun onActivityResult(
@@ -177,8 +170,7 @@ class MoreOPtions : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(REQUESTCODE==resultCode &&  resultCode==RESULT_OK)
-        {
+        if (REQUESTCODE == resultCode && resultCode == RESULT_OK) {
             return
         }
     }

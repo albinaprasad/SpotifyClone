@@ -14,13 +14,15 @@ import com.albin.spotify.databinding.FavouriteViewElementsBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class FavouriteAdapter(var context: Context,var musicList: List<Music>) : RecyclerView.Adapter<FavouriteAdapter.favViewBinder>(){
+class FavouriteAdapter(var context: Context, var musicList: List<Music>) :
+    RecyclerView.Adapter<FavouriteAdapter.favViewBinder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): favViewBinder {
 
-        val view= FavouriteViewElementsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val view =
+            FavouriteViewElementsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return favViewBinder(view)
     }
 
@@ -28,19 +30,24 @@ class FavouriteAdapter(var context: Context,var musicList: List<Music>) : Recycl
         holder: favViewBinder,
         position: Int
     ) {
-        Glide.with(context).load(musicList[position]
-            .imageuri).apply(RequestOptions()
-            .placeholder(R.drawable.musical_icon))
+        Glide.with(context).load(
+            musicList[position]
+                .imageuri
+        ).apply(
+            RequestOptions()
+                .placeholder(R.drawable.musical_icon)
+        )
             .circleCrop()
             .into(holder.favBinding.songImgF)
 
-        holder.favBinding.songNameF.text=musicList[position].title
+        holder.favBinding.songNameF.text = musicList[position].title
 
         holder.favBinding.songImgF.setOnClickListener {
 
-            var favAdapterIntent=Intent(context,player::class.java)
+            var favAdapterIntent = Intent(context, player::class.java)
             favAdapterIntent.setAction("FavAdapter")
-            favAdapterIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            favAdapterIntent.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             context.startActivity(favAdapterIntent)
 
         }
@@ -53,8 +60,9 @@ class FavouriteAdapter(var context: Context,var musicList: List<Music>) : Recycl
     }
 
 
-    class favViewBinder(val favBinding: FavouriteViewElementsBinding):RecyclerView.ViewHolder(favBinding.root){
+    class favViewBinder(val favBinding: FavouriteViewElementsBinding) :
+        RecyclerView.ViewHolder(favBinding.root) {
 
-        var root=favBinding.root
+        var root = favBinding.root
     }
 }

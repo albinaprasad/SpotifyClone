@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.albin.spotify.databinding.BtItemsBinding
 
-class BTAdapter(val context: Context,val paired_devices: ArrayList<BTPaired>): RecyclerView.Adapter<BTAdapter.BTviewHolder>() {
+class BTAdapter(val context: Context, val paired_devices: ArrayList<BTPaired>) :
+    RecyclerView.Adapter<BTAdapter.BTviewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): BTviewHolder {
-        val view= BtItemsBinding.inflate(LayoutInflater.from(context),parent,false)
+        val view = BtItemsBinding.inflate(LayoutInflater.from(context), parent, false)
         return BTviewHolder(view)
     }
 
@@ -19,7 +20,7 @@ class BTAdapter(val context: Context,val paired_devices: ArrayList<BTPaired>): R
         holder: BTviewHolder,
         position: Int
     ) {
-       holder.BTitembinding.BtdeviceName.text=paired_devices[position].deviceName.toString()
+        holder.BTitembinding.BtdeviceName.text = paired_devices[position].deviceName.toString()
     }
 
     override fun getItemCount(): Int {
@@ -27,7 +28,8 @@ class BTAdapter(val context: Context,val paired_devices: ArrayList<BTPaired>): R
     }
 
 
-    class BTviewHolder(val BTitembinding: BtItemsBinding): RecyclerView.ViewHolder(BTitembinding.root){
+    class BTviewHolder(val BTitembinding: BtItemsBinding) :
+        RecyclerView.ViewHolder(BTitembinding.root) {
 
     }
 }

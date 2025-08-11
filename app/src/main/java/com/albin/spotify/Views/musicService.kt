@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 
 import android.graphics.BitmapFactory
+import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.media.session.MediaSession
 import android.net.Uri
@@ -18,6 +19,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyCallback
@@ -39,35 +41,35 @@ import java.util.concurrent.Executors
 import kotlin.invoke
 
 
-class musicService: Service() {
+class musicService : Service() {
 
-companion object{
-    val PREVIOUS="previous"
-    val NEXT="next"
-    val STOP="stop"
-    val PLAY="play"
+    companion object {
+        val PREVIOUS = "previous"
+        val NEXT = "next"
+        val STOP = "stop"
+        val PLAY = "play"
 
 
-}
+    }
+
     var mediaPlayer: MediaPlayer? = null
 
-    var player1=player()
+    var player1 = player()
 
     lateinit var runnable: Runnable
-    lateinit  var mediasession: MediaSessionCompat
-     lateinit var telephonyManager: TelephonyManager
-    private var wasPlayingBeforeCall:Boolean = false
+    lateinit var mediasession: MediaSessionCompat
+    lateinit var telephonyManager: TelephonyManager
+    private var wasPlayingBeforeCall: Boolean = false
     private var callCallback: CallStateCallback? = null
 
-    val mybinder=Mybinder()
+    val mybinder = Mybinder()
 
     override fun onBind(p0: Intent?): IBinder? {
-        mediasession=MediaSessionCompat(this, "MusicServiceTag")
+        mediasession = MediaSessionCompat(this, "MusicServiceTag")
         return mybinder
     }
 
-    inner class Mybinder: Binder()
-    {
+    inner class Mybinder : Binder() {
         fun currentService(): musicService {
             return this@musicService
         }
@@ -79,16 +81,18 @@ companion object{
     override fun onCreate() {
         super.onCreate()
         telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-         callCallback = CallStateCallback(this)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
-            telephonyManager.registerTelephonyCallback(Executors.newSingleThreadExecutor(),callCallback!!)
-        }
-        else{
-            telephonyManager.listen(object:android.telephony.PhoneStateListener(){
+        callCallback = CallStateCallback(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            telephonyManager.registerTelephonyCallback(
+                Executors.newSingleThreadExecutor(),
+                callCallback!!
+            )
+        } else {
+            telephonyManager.listen(object : android.telephony.PhoneStateListener() {
                 override fun onCallStateChanged(state: Int, phoneNumber: String?) {
-                        handleCallState(state)
+                    handleCallState(state)
                 }
-            },PhoneStateListener.LISTEN_CALL_STATE)
+            }, PhoneStateListener.LISTEN_CALL_STATE)
         }
 
     }
@@ -104,17 +108,37 @@ companion object{
             }
 
 
-            val Previntent= Intent(this, NotificationReciever::class.java).setAction(PREVIOUS)
-            val prevPendingIntent= PendingIntent.getBroadcast(this,0,Previntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val Previntent = Intent(this, NotificationReciever::class.java).setAction(PREVIOUS)
+            val prevPendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                Previntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
-            val Nextintent= Intent(this, NotificationReciever::class.java).setAction(NEXT)
-            val nextPendingIntent= PendingIntent.getBroadcast(this,0,Nextintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val Nextintent = Intent(this, NotificationReciever::class.java).setAction(NEXT)
+            val nextPendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                Nextintent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
-            val Exitintent= Intent(this, NotificationReciever::class.java).setAction(STOP)
-            val exitPendingIntent= PendingIntent.getBroadcast(this,0,Exitintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val Exitintent = Intent(this, NotificationReciever::class.java).setAction(STOP)
+            val exitPendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                Exitintent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
-            val Playintent= Intent(this, NotificationReciever::class.java).setAction(PLAY)
-            val playPendingIntent= PendingIntent.getBroadcast(this,0,Playintent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            val Playintent = Intent(this, NotificationReciever::class.java).setAction(PLAY)
+            val playPendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                Playintent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
 
             val contentIntent = Intent(this, player::class.java).apply {
@@ -135,15 +159,14 @@ companion object{
                 R.drawable.pause
             }
 
-            val playPauseText=if(player.isPlaying){
+            val playPauseText = if (player.isPlaying) {
                 "Pause"
 
-            }
-            else{
+            } else {
                 "play"
             }
 
-                val noti = NotificationCompat.Builder(baseContext, "id1")
+            val noti = NotificationCompat.Builder(baseContext, "id1")
                 .setContentTitle(player.PlayermusicList[player.position].title)
                 .setContentText(player.PlayermusicList[player.position].singer)
                 .setSmallIcon(R.drawable.updates)
@@ -158,63 +181,61 @@ companion object{
                 .setContentIntent(contentPendingIntent)
                 .setStyle(
                     androidx.media.app.NotificationCompat.MediaStyle()
-                    .setMediaSession(mediasession.sessionToken)
-                    .setShowActionsInCompactView(0, 1, 2)
-                        )
+                        .setMediaSession(mediasession.sessionToken)
+                        .setShowActionsInCompactView(0, 1, 2)
+                )
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                startForeground(1, noti.build())
-            }
-         catch (e: Exception) {
+                .build()
+
+            startForeground(1, noti)
+        } catch (e: Exception) {
             Log.e("NotificationError", "Error building notification", e)
         }
 
 
-        //automatiaccly set up the playing facility during incoming calls
-
-
     }
 
-    fun seekbarSetup(){
+    fun seekbarSetup() {
 
-        runnable= Runnable {
-            playerBinding.currentTimeTextView.text= player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
-            playerBinding.musicSeekBar.progress=musicservice!!.mediaPlayer!!.currentPosition
-            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        runnable = Runnable {
+            playerBinding.currentTimeTextView.text =
+                player1.formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+            playerBinding.musicSeekBar.progress = musicservice!!.mediaPlayer!!.currentPosition
+            Handler(Looper.getMainLooper()).postDelayed(runnable, 200)
         }
-        Handler(Looper.getMainLooper()).postDelayed(runnable,0)
-
-
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 0)
 
 
     }
+
     @RequiresApi(Build.VERSION_CODES.S)
-    class CallStateCallback(val service: musicService): TelephonyCallback(), TelephonyCallback.CallStateListener{
+    class CallStateCallback(val service: musicService) : TelephonyCallback(),
+        TelephonyCallback.CallStateListener {
         override fun onCallStateChanged(state: Int) {
             service.handleCallState(state)
         }
 
     }
+
     private fun handleCallState(state: kotlin.Int) {
 
-        when(state)
-        {
-            TelephonyManager.CALL_STATE_RINGING,TelephonyManager.CALL_STATE_OFFHOOK->{
+        when (state) {
+            TelephonyManager.CALL_STATE_RINGING, TelephonyManager.CALL_STATE_OFFHOOK -> {
 
-                if(player.isPlaying)
-                {
-                    wasPlayingBeforeCall=true
-                    player.isPlaying=false
+                if (player.isPlaying) {
+                    wasPlayingBeforeCall = true
+                    player.isPlaying = false
                     mediaPlayer?.pause()
                     showNotification()
 
                 }
             }
-            TelephonyManager.CALL_STATE_IDLE->{
 
-                if (wasPlayingBeforeCall)
-                {
-                    player.isPlaying=true
-                    wasPlayingBeforeCall=false
+            TelephonyManager.CALL_STATE_IDLE -> {
+
+                if (wasPlayingBeforeCall) {
+                    player.isPlaying = true
+                    wasPlayingBeforeCall = false
                     mediaPlayer?.start()
                     showNotification()
                     seekbarSetup()

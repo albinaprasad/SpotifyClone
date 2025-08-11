@@ -22,7 +22,8 @@ class PlayListAdapter(var context: Context, var PlaylistsList: ArrayList<Playlis
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
-        holder.playlitsItemBinding.playLitname.text = PlaylistsList[position].playlistname.toString()
+        holder.playlitsItemBinding.playLitname.text =
+            PlaylistsList[position].playlistname.toString()
 
         // Delete button
         holder.playlitsItemBinding.playDeleteBtn.setOnClickListener {

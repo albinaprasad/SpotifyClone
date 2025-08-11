@@ -7,7 +7,14 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 
-data class Music (val id: String,val title:String, val singer: String, val duration:Long=0,val path:String,val imageuri: String) {
+data class Music(
+    val id: String,
+    val title: String,
+    val singer: String,
+    val duration: Long = 0,
+    val path: String,
+    val imageuri: String
+) {
 
 
     fun formatDuration(milliseconds: Long): String {
@@ -18,21 +25,22 @@ data class Music (val id: String,val title:String, val singer: String, val durat
     }
 }
 
-class Playlist{
-    lateinit var playlistname:String
-    lateinit var  playlist: ArrayList<Music>
-    lateinit var createdon:String
+class Playlist {
+    lateinit var playlistname: String
+    lateinit var playlist: ArrayList<Music>
+    lateinit var createdon: String
 }
 
 
-class MusicPlaylit{
-    var ref= ArrayList<Playlist>()
+class MusicPlaylit {
+    var ref = ArrayList<Playlist>()
 }
-fun favSongFind( Id:String): Int {
 
-    Favourites.FavMusicList.forEachIndexed { index,music->
+fun favSongFind(Id: String): Int {
 
-        if( music.id == Id){
+    Favourites.FavMusicList.forEachIndexed { index, music ->
+
+        if (music.id == Id) {
 
             return index
         }
@@ -40,12 +48,11 @@ fun favSongFind( Id:String): Int {
     return -1
 }
 
-fun checkMusicExists(musicData: ArrayList<Music>): ArrayList<Music>{
+fun checkMusicExists(musicData: ArrayList<Music>): ArrayList<Music> {
 
-    musicData.forEachIndexed{index,music->
-        var file=File(music.path)
-        if (file.exists() == false)
-        {
+    musicData.forEachIndexed { index, music ->
+        var file = File(music.path)
+        if (file.exists() == false) {
             musicData.removeAt(index)
         }
     }
