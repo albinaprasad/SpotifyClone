@@ -268,37 +268,47 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
 
     private fun setMediaPlayer() {
+        // Check if MediaPlayer is already playing the same song
+        if (musicservice?.mediaPlayer != null && position == musicservice?.currentSongPos && musicservice?.mediaPlayer?.isPlaying == true) {
 
 
-        musicservice!!.mediaPlayer?.let {
+            playerBinding.Pausebtn.setIconResource(R.drawable.pause)
+            playerBinding.currentTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+            playerBinding.totalTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
+            playerBinding.musicSeekBar.progress = musicservice!!.mediaPlayer!!.currentPosition
+            playerBinding.musicSeekBar.max = musicservice!!.mediaPlayer!!.duration
+            return
+
+        }
+
+        // Reset and release existing MediaPlayer
+        musicservice?.mediaPlayer?.let {
             it.stop()
             it.reset()
             it.release()
         }
-        musicservice!!.mediaPlayer = null
+        musicservice?.mediaPlayer = null
 
-        musicservice!!.mediaPlayer = MediaPlayer()
-        musicservice!!.mediaPlayer!!.reset()
-        musicservice!!.mediaPlayer!!.setDataSource(PlayermusicList[position].path)
-        musicservice!!.mediaPlayer!!.prepare()
-        musicservice!!.mediaPlayer!!.start()
+        // Initialize new MediaPlayer
+        musicservice?.mediaPlayer = MediaPlayer().apply {
+            reset()
+            setDataSource(PlayermusicList[position].path)
+            prepare()
+            start()
+        }
 
+        // Update UI
         playerBinding.Pausebtn.setIconResource(R.drawable.pause)
-        player.musicservice!!.showNotification()
+        musicservice?.showNotification()
         isPlaying = true
+        musicservice?.currentSongPos = position // Store current song position
 
-        playerBinding.currentTimeTextView.text =
-            formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
-
-        playerBinding.totalTimeTextView.text =
-            formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
-
+        playerBinding.currentTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+        playerBinding.totalTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
         playerBinding.musicSeekBar.progress = 0
         playerBinding.musicSeekBar.max = musicservice!!.mediaPlayer!!.duration
 
-        musicservice!!.mediaPlayer!!.setOnCompletionListener(this)
-
-
+        musicservice?.mediaPlayer?.setOnCompletionListener(this)
     }
 
     fun formatTimeDuration(lng: Long): String {
@@ -372,10 +382,19 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
         val binder = p1 as musicService.Mybinder
         musicservice = binder.currentService()
-        setMediaPlayer()
-        musicservice!!.showNotification()
-        musicservice!!.seekbarSetup()
+        if (musicservice?.mediaPlayer == null || musicservice?.currentSongPos != position) {
+            setMediaPlayer()
+        } else {
 
+            setLayout()
+            playerBinding.Pausebtn.setIconResource(if (isPlaying) R.drawable.pause else R.drawable.playandpause)
+            playerBinding.currentTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.currentPosition.toLong())
+            playerBinding.totalTimeTextView.text = formatTimeDuration(musicservice!!.mediaPlayer!!.duration.toLong())
+            playerBinding.musicSeekBar.progress = musicservice!!.mediaPlayer!!.currentPosition
+            playerBinding.musicSeekBar.max = musicservice!!.mediaPlayer!!.duration
+            musicservice?.seekbarSetup()
+        }
+        musicservice?.showNotification()
     }
 
     override fun onServiceDisconnected(p0: ComponentName?) {

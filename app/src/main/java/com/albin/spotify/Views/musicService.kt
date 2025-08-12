@@ -53,7 +53,7 @@ class musicService : Service() {
     }
 
     var mediaPlayer: MediaPlayer? = null
-
+    var currentSongPos: Int=-1
     var player1 = player()
 
     lateinit var runnable: Runnable
@@ -76,7 +76,6 @@ class musicService : Service() {
     }
 
     //telephony manager setup
-
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate() {
         super.onCreate()

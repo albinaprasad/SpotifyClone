@@ -78,6 +78,6 @@ class PlayListAdapter(var context: Context, var PlaylistsList: ArrayList<Playlis
     fun refreshPlaylistData() {
         PlaylistsList = ArrayList()
         PlaylistsList.addAll(createPlaylist.musicPlaylitObj.ref)
-        notifyDataSetChanged() // Safe to call here, outside of layout computation
+        notifyDataSetChanged()
     }
 }

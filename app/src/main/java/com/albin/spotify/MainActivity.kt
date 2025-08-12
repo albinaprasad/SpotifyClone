@@ -185,14 +185,9 @@ class MainActivity : AppCompatActivity() {
     private fun adapterSetup() {
 
 
-        lifecycleScope.launch {
-            var readedmusiclist = withContext(Dispatchers.IO) {
-                readAllMusic()
-            }
+            var readedmusiclist = readAllMusic()
             musicList.clear()
             musicList.addAll(readedmusiclist)
-        }
-
 
         val adapter = MusicAdapter(this, musicList)
         mainBinding.recyclerView.setItemViewCacheSize(10)
