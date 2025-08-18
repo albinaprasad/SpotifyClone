@@ -114,7 +114,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_recents -> {
-                    ToastShower("Recents clicked")
+
+                    val recentIntent=Intent(this@MainActivity, Recents::class.java)
+                    startActivity(recentIntent)
+                    //ToastShower("Recents clicked")
                 }
 
                 R.id.nav_updates -> {
@@ -132,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             mainBinding.drawerlayout.closeDrawer(GravityCompat.START)
             true
         }
-        //navbar animatin
+        //navbar animation
         navbarAnimationSetUp()
 
         //shuffle BUtton
@@ -217,7 +220,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(permission), PERMISSION_REQUEST_CODE)
         } else {
             //Toast.makeText(this, "Storage access granted!", Toast.LENGTH_SHORT).show()
-            adapterSetup() // Load music when permission is already granted
+            adapterSetup()
         }
     }
 

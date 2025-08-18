@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="6dp"
+    android:background="@color/moBlack">
+
+    <com.google.android.material.imageview.ShapeableImageView
+
+        android:id="@+id/songIMG"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/img"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/corner_radius"
+       >
+    </com.google.android.material.imageview.ShapeableImageView>
+    <TextView
+        android:layout_marginTop="3dp"
+        android:paddingStart="2dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/songName"
+        android:text="Song Name"
+        android:singleLine="true"
+        android:textColor="@color/white">
+    </TextView>
+</LinearLayout>
