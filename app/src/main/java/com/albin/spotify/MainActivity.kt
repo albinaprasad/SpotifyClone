@@ -1,5 +1,6 @@
 package com.albin.spotify
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Service.STOP_FOREGROUND_REMOVE
 import android.content.Intent
@@ -19,6 +20,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.helper.widget.Carousel
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -62,6 +64,23 @@ class MainActivity : AppCompatActivity() {
 
         // Request permission for the storage access
         requestPermission()
+
+
+//permission request for phone
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Request permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_PHONE_STATE),
+                800
+            )
+        }
+
 
 
         Favourites.FavMusicList = ArrayList()
@@ -252,7 +271,16 @@ class MainActivity : AppCompatActivity() {
     private fun readAllMusic(): ArrayList<Music> {
         val tempMusicList = ArrayList<Music>()
 
-        val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
+        val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/WhatsApp/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Telegram/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Recordings/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Call Recordings/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Notifications/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Ringtones/%'" +
+                " AND " + MediaStore.Audio.Media.DATA + " NOT LIKE '%/Alarms/%'" +
+                " AND " + MediaStore.Audio.Media.DURATION + " > 30000"
+
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE,

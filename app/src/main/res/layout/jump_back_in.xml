@@ -15,7 +15,7 @@
         android:src="@drawable/img"
         android:scaleType="fitXY"
         android:clickable="true"
-        app:shapeAppearanceOverlay="@style/corner_radius"
+        app:shapeAppearanceOverlay="@style/corner_radius_small"
        >
     </com.google.android.material.imageview.ShapeableImageView>
     <TextView

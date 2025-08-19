@@ -109,9 +109,6 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
         if (intent.action == "RECENTSACTIVITY"){
 
-            val serviceintent = Intent(this, musicService::class.java)
-            bindService(intent, this, BIND_AUTO_CREATE)
-            startService(serviceintent)
 
             PlayermusicList.clear()
             val playlistType = intent.getStringExtra("sectionName")
@@ -140,7 +137,12 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
                 {
                     Toast.makeText(applicationContext,"there is soome error in the recents Activity",Toast.LENGTH_SHORT).show()
                 }
+
             }
+
+            val serviceintent = Intent(this, musicService::class.java)
+            bindService(intent, this, BIND_AUTO_CREATE)
+            startService(serviceintent)
         }
 
 
@@ -238,6 +240,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             }
             startActivity(Intent.createChooser(shareIntent, "Sharing Music"))
         }
+
         //seekbar setup
         playerBinding.musicSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -421,6 +424,7 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         musicservice = binder.currentService()
         if (musicservice?.mediaPlayer == null || musicservice?.currentSongPos != position) {
             setMediaPlayer()
+            musicservice?.seekbarSetup()
         } else {
 
             setLayout()
