@@ -32,6 +32,7 @@ import com.albin.spotify.Views.Favourites
 import com.google.gson.JsonSyntaxException
 import com.albin.spotify.Views.MusicAdapter
 import com.albin.spotify.Views.Playlists
+import com.albin.spotify.Views.Search
 import com.albin.spotify.Views.SinglePlaylistDetails
 import com.albin.spotify.Views.createPlaylist
 import com.albin.spotify.Views.player
@@ -141,6 +142,11 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.nav_updates -> {
                     ToastShower("Updates clicked")
+                }
+
+                R.id.nav_search->{
+                    val serachIntent=Intent(this@MainActivity, Search::class.java)
+                    startActivity(serachIntent)
                 }
 
                 R.id.nav_settings -> {

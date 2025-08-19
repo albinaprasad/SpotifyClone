@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Define a style for a square SearchBar with rounded corners -->
+    <style name="SquareSearchBar" parent="Widget.Material3.SearchBar">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Square</item>
+    </style>
+
+    <style name="ShapeAppearance.Square" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item> <!-- Adjust for desired roundness; set to 0dp for sharp corners -->
+    </style>
+</resources>
