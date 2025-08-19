@@ -1,6 +1,7 @@
 package com.albin.spotify.Views
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,7 @@ import com.albin.spotify.databinding.JumpBackInBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class RecnetsAdapter(val context: Context,var recentPlaylists: ArrayList<Music>): RecyclerView.Adapter<RecnetsAdapter.recentViewHolder>() {
+class RecnetsAdapter(val context: Context,var recentPlaylists: ArrayList<Music>,var nameofSectionSelected:String): RecyclerView.Adapter<RecnetsAdapter.recentViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -35,6 +36,17 @@ class RecnetsAdapter(val context: Context,var recentPlaylists: ArrayList<Music>)
 
 
         holder.jumpBackInBinding.songName.text=recentPlaylists[position].title.toString()
+
+        //playing the music
+        holder.jumpBackInBinding.songIMG.setOnClickListener {
+
+            val recentIntent=Intent(context, player::class.java)
+            recentIntent.setAction("RECENTSACTIVITY")
+            recentIntent.putExtra("clickedIndex",position)
+            recentIntent.putExtra("sectionName",nameofSectionSelected)
+            context.startActivity(recentIntent)
+        }
+
 
     }
 

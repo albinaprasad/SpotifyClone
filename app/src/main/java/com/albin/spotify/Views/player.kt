@@ -34,6 +34,7 @@ import com.albin.spotify.MainActivity
 import com.albin.spotify.Music
 import com.albin.spotify.NotificationReciever
 import com.albin.spotify.R
+import com.albin.spotify.Recents
 import com.albin.spotify.Views.SinglePlaylistDetails.Companion.curentplayListPos
 import com.albin.spotify.databinding.ActivityPlayerBinding
 import com.albin.spotify.favSongFind
@@ -84,9 +85,9 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
 
 
         if (intent.action == "FavAdapter") {
-            val intent = Intent(this, musicService::class.java)
+            val serviceintent = Intent(this, musicService::class.java)
             bindService(intent, this, BIND_AUTO_CREATE)
-            startService(intent)
+            startService(serviceintent)
             Toast.makeText(this@player, "player clicked", Toast.LENGTH_SHORT).show()
             PlayermusicList.clear()
             PlayermusicList.addAll(Favourites.FavMusicList)
@@ -94,9 +95,9 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
         }
 
         if (intent.action == "PLAYLIST") {
-            val intent = Intent(this, musicService::class.java)
+            val serviceintent = Intent(this, musicService::class.java)
             bindService(intent, this, BIND_AUTO_CREATE)
-            startService(intent)
+            startService(serviceintent)
 
             var pos = intent.getIntExtra("playlistIndex", 0)
             position = intent.getIntExtra("index", 0)
@@ -104,6 +105,42 @@ class player : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionL
             Toast.makeText(this@player, "player clicked", Toast.LENGTH_SHORT).show()
             PlayermusicList.clear()
             PlayermusicList.addAll(createPlaylist.musicPlaylitObj.ref[pos].playlist)
+        }
+
+        if (intent.action == "RECENTSACTIVITY"){
+
+            val serviceintent = Intent(this, musicService::class.java)
+            bindService(intent, this, BIND_AUTO_CREATE)
+            startService(serviceintent)
+
+            PlayermusicList.clear()
+            val playlistType = intent.getStringExtra("sectionName")
+            val clickedIndex = intent.getIntExtra("clickedIndex", 0)
+
+            position = clickedIndex
+
+            when(playlistType){
+
+                Recents.JUMP -> {
+                    PlayermusicList.addAll(Recents.jumpBackIn)
+                }
+                Recents.RECENTS->{
+                    PlayermusicList.addAll(Recents.recents)
+                }
+                Recents.CHILL->{
+                    PlayermusicList.addAll(Recents.chill)
+                }
+                Recents.MOREOF->{
+                    PlayermusicList.addAll(Recents.moreOfWhat)
+                }
+                Recents.RECOMENDED->PlayermusicList.addAll(Recents.recomendedForToday)
+                Recents.NEWRELEASE->PlayermusicList.addAll(Recents.newRelease)
+
+                else->
+                {
+                    Toast.makeText(applicationContext,"there is soome error in the recents Activity",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
 

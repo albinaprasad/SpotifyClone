@@ -14,71 +14,90 @@ class Recents : AppCompatActivity() {
 
     lateinit var Rbinding: ActivityRecentsBinding
 
+    companion object {
+        var jumpBackIn = ArrayList<Music>()
+        var chill = ArrayList<Music>()
+        var recents = ArrayList<Music>()
+        var moreOfWhat = ArrayList<Music>()
+        var recomendedForToday = ArrayList<Music>()
+        var newRelease = ArrayList<Music>()
+
+
+        val JUMP: String = "Jump"
+        val CHILL: String = "Chill"
+        val RECENTS: String = "Rececnts"
+        val MOREOF: String = "moreofWhat"
+        val RECOMENDED: String = "RecomendedForToday"
+        var NEWRELEASE: String = "newRelease"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        Rbinding= ActivityRecentsBinding.inflate(layoutInflater)
+        Rbinding = ActivityRecentsBinding.inflate(layoutInflater)
         setContentView(Rbinding.root)
 
         //jump back in adapter
 
-        val selected: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var jumpBackInAdapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected)
-       Rbinding.recyclerView1.apply {
+        jumpBackIn = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var jumpBackInAdapter: RecnetsAdapter = RecnetsAdapter(this@Recents, jumpBackIn,JUMP)
+        Rbinding.recyclerView1.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-           adapter=jumpBackInAdapter
+            adapter = jumpBackInAdapter
         }
 
         //chill
-        val selected2: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var chillAdapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected2)
+        chill = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var chillAdapter: RecnetsAdapter = RecnetsAdapter(this@Recents, chill,CHILL)
         Rbinding.recyclerView2.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            adapter=chillAdapter
+            adapter = chillAdapter
         }
         //recents
 
-        val selected3: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var recentAdapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected3)
+        recents = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var recentAdapter: RecnetsAdapter = RecnetsAdapter(this@Recents, recents,RECENTS)
         Rbinding.recyclerView3.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            adapter=recentAdapter
+            adapter = recentAdapter
         }
 
         //more of what u like
 
-        val selected4: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var moreadapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected4)
+        moreOfWhat = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var moreadapter: RecnetsAdapter = RecnetsAdapter(this@Recents, moreOfWhat,MOREOF)
         Rbinding.recyclerView4.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            adapter=moreadapter
+            adapter = moreadapter
         }
 
         //recommended for today
 
-        val selected5: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var recAdapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected5)
+        recomendedForToday = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var recAdapter: RecnetsAdapter = RecnetsAdapter(this@Recents, recomendedForToday,RECOMENDED)
         Rbinding.recyclerView5.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            adapter=recAdapter
+            adapter = recAdapter
         }
-
 
 
         //neew release for you
 
-        val selected6: ArrayList<Music> = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
-        var newRelseAdapter: RecnetsAdapter= RecnetsAdapter(this@Recents,selected6)
+        newRelease = MainActivity.musicList.shuffled().take(4) as ArrayList<Music>
+        var newRelseAdapter: RecnetsAdapter = RecnetsAdapter(this@Recents, newRelease,NEWRELEASE)
         Rbinding.recyclerView6.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
-            adapter=newRelseAdapter
+            adapter = newRelseAdapter
         }
     }
+
+
+
 }
