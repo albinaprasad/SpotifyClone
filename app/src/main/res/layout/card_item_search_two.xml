@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/main"
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    android:backgroundTint="@color/pink"
+    android:elevation="8dp">
+
+    <FrameLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:fontFamily="@font/montserrat_bold"
+            android:layout_margin="6dp"
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music"
+            android:textColor="@color/white"
+            android:textStyle="bold">
+        </TextView>
+
+        <ImageView
+            android:layout_marginStart="95dp"
+            android:id="@+id/ImagView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/singer"
+            android:rotation="20"
+            android:translationX="10dp"
+            android:translationY="10dp">
+
+        </ImageView>
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

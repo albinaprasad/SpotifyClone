@@ -65,4 +65,7 @@ dependencies {
 
     // Add the serialization library here
     implementation(libs.kotlinx.serialization.json)
+
+    //exoplayer
+    implementation(libs.exoplayercore)
 }
