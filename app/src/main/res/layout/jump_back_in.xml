@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="6dp"
-    android:background="@color/moBlack">
+    android:background="@color/SpBlack">
 
     <com.google.android.material.imageview.ShapeableImageView
 
@@ -28,6 +28,6 @@
         android:text="Song Name"
         android:fontFamily="@font/montserrat_medium"
         android:singleLine="true"
-        android:textColor="@color/white">
+        android:textColor="#F6B7BC9B">
     </TextView>
 </LinearLayout>
