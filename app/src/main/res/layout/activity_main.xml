@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:openDrawer="">
 
     <!-- Main Content -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,6 +41,21 @@
                 android:contentDescription="Open Navigation Menu"
                 android:padding="8dp"
                 android:src="@drawable/nav"
+                app:tint="#FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/searchBtn"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:scaleType="fitXY"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Open Navigation Menu"
+                android:padding="8dp"
+                android:src="@drawable/home_lens"
                 app:tint="#FFFFFF" />
 
             <!-- Title -->

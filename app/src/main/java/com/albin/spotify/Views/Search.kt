@@ -1,17 +1,24 @@
 package com.albin.spotify.Views
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.albin.spotify.Carditems
+import com.albin.spotify.MainActivity
 import com.albin.spotify.R
+import com.albin.spotify.Recents
 import com.albin.spotify.databinding.ActivitySearchBinding
 import com.albin.spotify.searchAdaptertwo
 import com.albin.spotify.serachCardAdapter
@@ -69,10 +76,80 @@ class Search : AppCompatActivity() {
         videAnimation( searchBinding.card3)
 
 //camera btn setup
+searchBinding.camera.setOnClickListener {
+
+    val cintent=Intent(this@Search, cameraActivity::class.java)
+    startActivity(cintent)
+}
 
 
+//nav bar
+        searchBinding.navButton.setOnClickListener {
+            searchBinding.drawerlayout.openDrawer(GravityCompat.START)
+        }
 
+        searchBinding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_addprofile -> {
+                    ToastShower("Add account")
+                }
 
+                R.id.nav_whatsnew -> {
+                    ToastShower("What's new clicked")
+                }
+
+                R.id.nav_recents -> {
+
+                    val recentIntent=Intent(this@Search, Recents::class.java)
+                    startActivity(recentIntent)
+                    //ToastShower("Recents clicked")
+                }
+
+                R.id.nav_updates -> {
+                    ToastShower("Updates clicked")
+                }
+
+                R.id.nav_search->{
+                    val serachIntent=Intent(this@Search, Search::class.java)
+                    startActivity(serachIntent)
+                }
+
+                R.id.nav_settings -> {
+                    ToastShower("Settings clicked")
+                }
+
+                R.id.nav_exit -> {
+                    finish() // Add actual exit functionality
+                }
+            }
+            searchBinding.drawerlayout.closeDrawer(GravityCompat.START)
+            true
+        }
+
+        navbarAnimationSetUp()
+    }
+
+    fun navbarAnimationSetUp() {
+
+        searchBinding.drawerlayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+                var moveDistance = drawerView.width * slideOffset
+                searchBinding.main.translationX = moveDistance
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+
+            }
+        })
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -147,6 +224,10 @@ class Search : AppCompatActivity() {
         carditemsTwo.add(Carditems("R&B", R.color.BROWN, R.drawable.f_one))
         carditemsTwo.add(Carditems("Focus", R.color.SANDEL, R.drawable.orange_sky))
 
+    }
+
+    fun ToastShower(dataToBeDisplayed: String) {
+        Toast.makeText(applicationContext, dataToBeDisplayed, Toast.LENGTH_SHORT).show()
     }
 
     private fun videoSetup() {

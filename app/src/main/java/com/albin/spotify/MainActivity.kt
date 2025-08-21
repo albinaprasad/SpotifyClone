@@ -49,6 +49,7 @@ import kotlin.system.exitProcess
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 100
+    private val CAMERA_REQUEST_CODE = 200
 
     companion object {
         val musicList = ArrayList<Music>()
@@ -65,6 +66,9 @@ class MainActivity : AppCompatActivity() {
 
         // Request permission for the storage access
         requestPermission()
+
+        //camrea permission
+        request_cameraPermission()
 
 
 //permission request for phone
@@ -185,6 +189,24 @@ class MainActivity : AppCompatActivity() {
             startActivity(favIntent)
         }
 
+        //search activity
+        mainBinding.searchBtn.setOnClickListener {
+            val searchIntent=Intent(this, Search::class.java)
+            startActivity(searchIntent)
+           
+        }
+
+    }
+
+    private fun request_cameraPermission() {
+       val cameraPermisson=arrayOf(Manifest.permission.CAMERA)
+
+        if(  cameraPermisson.all { ContextCompat.checkSelfPermission(applicationContext,it) == PackageManager.PERMISSION_GRANTED } ){
+
+        }
+        else{
+            ActivityCompat.requestPermissions(this,cameraPermisson,CAMERA_REQUEST_CODE)
+        }
     }
 
     fun navbarAnimationSetUp() {

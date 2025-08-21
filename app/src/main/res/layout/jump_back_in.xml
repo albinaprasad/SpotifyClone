@@ -10,8 +10,8 @@
     <com.google.android.material.imageview.ShapeableImageView
 
         android:id="@+id/songIMG"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/img"
         android:scaleType="fitXY"
         android:clickable="true"
@@ -21,10 +21,12 @@
     <TextView
         android:layout_marginTop="3dp"
         android:paddingStart="2dp"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
+        android:background="@color/SpBlack"
         android:layout_height="wrap_content"
         android:id="@+id/songName"
         android:text="Song Name"
+        android:fontFamily="@font/montserrat_medium"
         android:singleLine="true"
         android:textColor="@color/white">
     </TextView>

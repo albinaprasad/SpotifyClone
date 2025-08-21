@@ -1,239 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".Views.Search">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLL"
+    android:id="@+id/drawerlayout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/SpBlack">
+        android:fillViewport="true"
+        tools:context=".Views.Search">
 
-        <LinearLayout
-            android:id="@+id/linearLL1"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLL"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/SpBlack"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/SpBlack">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profileBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/moBlack"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/musical_icon"
-                app:shapeAppearanceOverlay="@style/circle">
+            <LinearLayout
+                android:id="@+id/linearLL1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/SpBlack"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.imageview.ShapeableImageView>
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/navButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/moBlack"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/musical_icon"
+                    app:shapeAppearanceOverlay="@style/circle">
+
+                </com.google.android.material.imageview.ShapeableImageView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:gravity="start|center_vertical"
+                    android:text="Search"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <ImageView
+
+                    android:id="@+id/camera"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="Add Profile"
+                    android:focusable="true"
+                    android:padding="4dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/camera_icon" />
+
+            </LinearLayout>
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/white"
+                android:hint="What do you want to listen to?"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLL1"
+                app:layout_constraintVertical_bias="0"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Square">
+
+            </com.google.android.material.search.SearchBar>
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/startBrwo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:gravity="start|center_vertical"
-                android:text="Search"
-                android:fontFamily="@font/montserrat_bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Start browsing"
+                android:fontFamily="@font/montserrat_medium"
                 android:textColor="@color/white"
-                android:textSize="22sp"
-                android:textStyle="bold">
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_bar">
 
             </TextView>
 
-            <ImageView
-                android:id="@+id/addPlaylist"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="Add Profile"
-                android:focusable="true"
-                android:padding="4dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/camera_icon" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startBrwo">
 
-        </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/white"
-            android:hint="What do you want to listen to?"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLL1"
-            app:layout_constraintVertical_bias="0"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Square">
+            <TextView
+                android:id="@+id/Discover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:text="Discover something new"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerView1">
 
-        </com.google.android.material.search.SearchBar>
+            </TextView>
 
-        <TextView
-            android:id="@+id/startBrwo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Start browsing"
-            android:fontFamily="@font/montserrat_medium"
-            android:textColor="@color/white"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_bar">
+            <LinearLayout
+                android:id="@+id/linearLL"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/Discover">
 
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/startBrwo">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <TextView
-            android:id="@+id/Discover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:text="Discover something new"
-            android:fontFamily="@font/montserrat_medium"
-            android:textColor="@color/white"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView1">
-
-        </TextView>
-
-        <LinearLayout
-            android:id="@+id/linearLL"
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="12dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/Discover">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_weight="1"
-                android:id="@+id/card1"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
-
-                <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/video1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:resize_mode="zoom"
-                    android:scaleType="centerCrop"
-                    app:surface_type="texture_view"
-                    app:use_controller="false" />
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:id="@+id/card2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+                    android:id="@+id/card1"
+                    app:strokeWidth="0dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="6dp">
 
                     <com.google.android.exoplayer2.ui.PlayerView
-                        android:id="@+id/video2"
-                        app:surface_type="texture_view"
+                        android:id="@+id/video1"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:resize_mode="zoom"
                         android:scaleType="centerCrop"
-                        android:layout_height="match_parent"
-                        app:resize_mode="zoom"
-                        app:use_controller="false" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:id="@+id/card3"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
-
-                    <com.google.android.exoplayer2.ui.PlayerView
                         app:surface_type="texture_view"
-                        android:id="@+id/video3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:resize_mode="zoom"
                         app:use_controller="false" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:id="@+id/card2"
+                    app:strokeWidth="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="6dp">
 
-        </LinearLayout>
-        <TextView
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp">
 
-            android:id="@+id/browse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:text="Browse all"
-            android:fontFamily="@font/montserrat_medium"
-            android:textColor="@color/white"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLL">
+                        <com.google.android.exoplayer2.ui.PlayerView
+                            android:id="@+id/video2"
+                            app:surface_type="texture_view"
+                            android:layout_width="match_parent"
+                            android:scaleType="centerCrop"
+                            android:layout_height="match_parent"
+                            app:resize_mode="zoom"
+                            app:use_controller="false" />
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    app:strokeWidth="0dp"
+                    android:id="@+id/card3"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="6dp">
 
-        </TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/browse">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp">
 
-        </androidx.recyclerview.widget.RecyclerView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <com.google.android.exoplayer2.ui.PlayerView
+                            app:surface_type="texture_view"
+                            android:id="@+id/video3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:resize_mode="zoom"
+                            app:use_controller="false" />
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
 
+            </LinearLayout>
+            <TextView
 
-</ScrollView>
+                android:id="@+id/browse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:text="Browse all"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLL">
+
+            </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/browse">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:background="#1A1A1A"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_body"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#FFFFFF" />
+</androidx.drawerlayout.widget.DrawerLayout>

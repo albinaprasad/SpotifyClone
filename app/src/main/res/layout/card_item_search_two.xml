@@ -6,11 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
+    app:strokeWidth="0dp"
     android:backgroundTint="@color/pink"
     android:elevation="8dp">
 
     <FrameLayout
         android:id="@+id/fl"
+        android:backgroundTint="@color/SpBlack"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView

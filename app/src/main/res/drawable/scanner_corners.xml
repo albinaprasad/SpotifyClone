@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/scanner_overlay_drawable.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Semi-transparent dark overlay covering entire screen -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#80000000" />
+        </shape>
+    </item>
+
+    <!-- Transparent square in the center -->
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <size android:width="250dp" android:height="250dp" />
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+</layer-list>
